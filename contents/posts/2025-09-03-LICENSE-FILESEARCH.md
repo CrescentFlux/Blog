@@ -81,6 +81,13 @@ git push new-repo main
 8.注意避免复制隐藏文件如.git
 cp -r /d/file/* /d/F/ 2>/dev/null || true
 
+9. 创建目录结构并且精准复制所需文件,注意确认是否是正确目录
+mkdir -p content/posts scripts docs
+cp /d/war/2025-*.md content/posts
+cp -r /d/war/update-feature/ scripts/
+cp /d/war/LICENSE docs/
+cp /d/war/README.md .
+
 ```
 
 # 理解不同的文件
@@ -98,6 +105,6 @@ git mv 只能追溯被添加到暂存区的文件(git add .)
 cd 命令只切换文件夹目录，不改变git的分支状态，HEAD指向只和分支有关
 注意规范操作记录
 注意复制操作时文件夹不要混淆
-
+code打开时注意要在相对应的目录里
 
 ```
