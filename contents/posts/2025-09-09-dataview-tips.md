@@ -42,16 +42,16 @@ FROM "5-Knowledge-Garden(知识花园)"
 LIMIT 10
 
 ```
-#列举某个文件夹和文件的名字并且限制查询多少条
+
 ```
-```dataview
+```dataview//#列举某个文件夹和文件的名字并且限制查询多少条
 TABLE file.name , file.folder
 LIMIT 10
 
 ```
-#查找某个项目里所有的标签列举出来
+
 ```
-```dataview
+```dataview//#查找某个项目里所有的标签列举出来
 LIST tags
 WHERE tags
 LIMIT 20
