@@ -119,8 +119,11 @@ FROM "filename-path"
 WHERE length(file.tasks) > 0#包含任何任务的不论完成与否的所有文件
 ```
 
+- 在字段中添加table时间的注意调用dateformat函数
 
-
+```
+TABLE 优先级, 状态, dateformat(file.cday, "yyyy年MM月dd日") AS "创建日期",投入时间
+```
 
 3. 注意事项
 - 注意语法格式中的逗号或者冒号必须是英文
