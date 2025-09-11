@@ -1,4 +1,4 @@
-1. 注意ACS和ASCII的选择问题：
+1. **注意ACS和ASCII的区别**：
 - ACS : using system-tools to slove 
 win+r ->msconfig -> 系统配置 ->引导 ->引导选项 ->安全引导 ->最小->确定
 重新启动之后，将SATA的模式从RST转变为AHCI(高级主机控制接口)
@@ -16,7 +16,7 @@ bios setup(主板系统设置)
 
 ```
 
-2. 克隆远程仓库的注意事项和步骤：
+2. **克隆远程仓库的注意事项和步骤：**
 ```
 ssh-keygen -t filename -C"your-email" ->
 ssh -T git@github.com
@@ -29,7 +29,7 @@ git push origin main
 
 ```
 
-3. 文件安装注意事项
+3. **文件安装注意事项**
 - APPIMAGE 
 ```
 #创建一个存放appimage的固定文件比如applications,将现有的appimage移动过去；
