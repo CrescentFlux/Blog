@@ -1,6 +1,6 @@
-1. 注意ACS和ASCII的选择问题：
+# 注意ACS和ASCII的选择问题：
 - ACS : using system-tools to slove 
-# win+r ->msconfig -> 系统配置 ->引导 ->引导选项 ->安全引导 ->最小->确定
+win+r ->msconfig -> 系统配置 ->引导 ->引导选项 ->安全引导 ->最小->确定
 重新启动之后，将SATA的模式从RST转变为AHCI(高级主机控制接口)
 
 - 修改时选择sata operation  ==> (setup->storage interface存储接口)
@@ -16,7 +16,7 @@ bios setup(主板系统设置)
 
 
 
-2. 克隆远程仓库的注意事项和步骤：
+# 克隆远程仓库的注意事项和步骤：
 ```
 ssh-keygen -t filename -C"your-email" ->
 ssh -T git@github.com
@@ -29,7 +29,7 @@ git push origin main
 
 ```
 
-3.文件安装注意事项
+#文件安装注意事项
 - APPIMAGE 
 ```
 #创建一个存放appimage的固定文件比如applications,将现有的appimage移动过去；
@@ -62,7 +62,7 @@ sudo snap remove<软件名> (卸载软件)
 ```
 
 
-4.other tips
+#other tips
 - using refus to install iso-file  path:https://refus.ie/zh/
 - https://github.com/search or https:github.com/apppname/appname/releases to find app.deb(x64)
 
