@@ -1,4 +1,4 @@
-# 注意ACS和ASCII的选择问题：
+1. 注意ACS和ASCII的选择问题：
 - ACS : using system-tools to slove 
 win+r ->msconfig -> 系统配置 ->引导 ->引导选项 ->安全引导 ->最小->确定
 重新启动之后，将SATA的模式从RST转变为AHCI(高级主机控制接口)
@@ -7,16 +7,16 @@ win+r ->msconfig -> 系统配置 ->引导 ->引导选项 ->安全引导 ->最小
 按住上下箭头建来选中并且按回车键确认选择或者直接按住F10选择save configeration and exit yes
 
 - bios不同模块的理解
-
+```
 device configeration:(硬件查询信息台)(port,model number,serial number,size,status,controller type,controller interface)
 supportassist os recovery(恢复出场设置)
 bios update(更新)
 diagnositcs(硬件诊断中心)
 bios setup(主板系统设置)
 
+```
 
-
-# 克隆远程仓库的注意事项和步骤：
+2. 克隆远程仓库的注意事项和步骤：
 ```
 ssh-keygen -t filename -C"your-email" ->
 ssh -T git@github.com
@@ -29,7 +29,7 @@ git push origin main
 
 ```
 
-#文件安装注意事项
+3. 文件安装注意事项
 - APPIMAGE 
 ```
 #创建一个存放appimage的固定文件比如applications,将现有的appimage移动过去；
@@ -62,7 +62,7 @@ sudo snap remove<软件名> (卸载软件)
 ```
 
 
-#other tips
+4. other tips
 - using refus to install iso-file  path:https://refus.ie/zh/
 - https://github.com/search or https:github.com/apppname/appname/releases to find app.deb(x64)
 
