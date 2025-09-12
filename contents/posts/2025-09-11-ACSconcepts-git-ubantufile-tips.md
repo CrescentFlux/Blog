@@ -1,7 +1,9 @@
 1. **注意ACS和ASCII的区别**：
 - ACS : using system-tools to slove 
+```
 win+r ->msconfig -> 系统配置 ->引导 ->引导选项 ->安全引导 ->最小->确定
 重新启动之后，将SATA的模式从RST转变为AHCI(高级主机控制接口)
+```
 
 - 修改时选择sata operation  ==> (setup->storage interface存储接口)
 按住上下箭头建来选中并且按回车键确认选择或者直接按住F10选择save configeration and exit yes
@@ -32,10 +34,12 @@ git push origin main
 3. **文件安装注意事项**
 - APPIMAGE 
 ```
-#创建一个存放appimage的固定文件比如applications,将现有的appimage移动过去；
-#创建桌面快捷方式(.desktop文件)
+#创建
+1.创建一个存放appimage的固定文件比如applications,将现有的appimage移动过去；
+2.创建桌面快捷方式(.desktop文件)
 nano ~/.local/share/applications/appname.desktop
 #文本编辑器编写对应文件
+
 [Desktop Entry]
 Version=1.0
 Type=Application
@@ -48,14 +52,12 @@ Terminal=false
 StartupWMClass=appname
 注意CRTL+o保存文件 -> CRTL +x退出文件
 
-#赋予启动器文件执行权限
+3.赋予启动器文件执行权限
 chmod +x ~/.local/share/application/appname.desktop
   
 #卸载软件
 1. 删除application对应文件
 2. 删除配置文件(.config/,.cache/,.local/share)
-
-  
 ```
 - SNAP
 ```
