@@ -50,7 +50,12 @@ StartupWMClass=appname
 
 #赋予启动器文件执行权限
 chmod +x ~/.local/share/application/appname.desktop
+  
+#卸载软件
+1. 删除application对应文件
+2. 删除配置文件(.config/,.cache/,.local/share)
 
+  
 ```
 - SNAP
 ```
@@ -58,9 +63,25 @@ sudo find <关键词>
 sudo snap install <软件包名>
 sudo snap install code --classic(不加参数时无法访问绝大多数系统文件)
 snap list (查看已安装)
-sudo snap remove<软件名> (卸载软件)
-```
+which appname 查看安装的软件是在哪个路径下
+~/snap/appname 配置文件位置
 
+卸载软件:
+1. 确认它是如何安装的 which code
+2.#如果路径显示为/usr/bin/code，表示他是从官方途径下载的deb包
+sudo apt remove code//常用的清除命令
+sudo apt purge code //彻底清除配置
+sudo apt autoremove//最好运行一下自动清理
+.config/删除配置文件
+#如果路径显示为/usr/local/bin/code或者～/bin/code意味着从官网下载deb并且使用了dpkg来安装的
+sudo apt remove code
+dpkg --list | grep code
+sudo apt purge<package-name>
+3.删除配置文件.config
+4.验证code命令是否存在
+
+
+```
 
 4. other tips
 - using refus to install iso-file  path:https://refus.ie/zh/
