@@ -44,20 +44,25 @@ source venv/bin/activate
 - 理解settings大概设置
 
 1. Text Editor(文本编辑器)
+```
 Cursor光标：设置光标的样式闪烁频率是否平滑移动
 Find查找替换：是否大小敏感，是否高亮所有结果
 Font字体：设置代码的字体，字号，行高
 Formatting格式化：设置代码自动排版的规则比如缩进用空格还是tab
 Minimap缩略图：控制所在中文
 Suggestions:智能语音助手：控制代码自动不全弹窗的出现时机，排序方式；
+```
 2. workbench工作台
+```
 appearance切换整个软件的颜色主题，图标主题
 breadcrumbs：路径导航，控制编辑器顶部那个显示文件路径的导航条
 editor management：编辑器管理，控制标签页的行为，比如是否预览模式，怎么分组排列
 settings editor：设置编辑器
 zen mode：一键开启极致专注模式只有代码
 screencast mode:屏幕广播模式，开启后屏幕上会显示按下的快捷键，适合录制作教程
+```
 3. features
+```
 explorer资源管理器：控制左侧文件管理书的行为，比日是否显示隐藏文件，怎么排序
 search控制全项目的搜索的功能，比如是否忽略某些文件夹，是否区分大小写
 debug：核心开发功能，控制如何调试代码
@@ -68,25 +73,30 @@ tasks：配置自定义的自动化脚本
 problems：控制如何显示代码错误和警告
 output输出：控制各种插件的工具输出日志的窗口
 accessibiility singals辅助功能
-4.applications
+```
+4. applications
+```
 proxy：设置代理服务器
 keyboard查看和修改所有键盘快捷键的映射关系
 update：更新code的操作
 telemetry遥测：选择是否向微软发送匿名数据
 settings sync设置同步：微软或者github账号登陆，所有的设置插件，快捷键同步到任何电脑上
-5. extensions 插件
+```
+5. extensions 插件:一些内置或者添加的扩展
 
 - 黄色文本框包裹问题属于 Text Editor，署名Indication UI
+```
 1. 它的作用是直观的告诉你现在正在输入的字符和编辑器默认的编码比如UTF-8下的字符看起来有什么不同；当输入中文时它会占用多个字符；
 2. 这个黄色的框就把多个字节组合成一个字符，作为一个整体框起来了，视觉上指示这是一个扩展字符；
 3. 它属于VS正常功能，用于视觉化显示非ASCII字符的字节范围；
-
+```
 
 - 解决方法
+```
 1. 打开命令面板crtl+shift+p
 2. 输入命令>Preferences:Open User Settings (JSON)回车
 3. 编辑配置文件settings.json
-```
+
 {//关闭所有类型的UNICODE高亮
     "editor.unicodeHighlight,ambiguousCharacters:false,
     "editor.unicodeHighlight.invisableCharacters:false,
