@@ -40,7 +40,7 @@ source venv/bin/activate
 
 ```
 
-# 解决code中文输入黄色文本框包裹干扰视野的问题
+# code中文输入去掉黄色文本框包裹的文件配置
 - **理解settings大概设置**
 
 1. Text Editor(文本编辑器)
@@ -105,8 +105,35 @@ settings sync设置同步：微软或者github账号登陆，所有的设置插�
     "editor.unicodeHighlight.includeStrings:false,
 }
 ```
+# UBANTU下code输入法配置
+- fcitx5框架检测
+```
+1.检查fcitx5输入法是否正确运行
+fcitx5-diagnose
+2.查看fcitx5主进程有没有运行
+ps aux | grep fcitx5
+3.检查系统现在默认的输入法框架是什么
+im-config -m
 
+```
+- 继续使用iubs框架
+```
+ibus exit
+ibus-daemon -drx
+```
+- 切换FCTIX5框架
+```
+注销重新登陆
+im-config -n fcitx5
 
+ps aux | grep fcitx5
+
+sudo apt install fcitx5-rime
+
+huangjin
+
+sudo reboot
+```  你好我是ibus输入法
 
 
 
