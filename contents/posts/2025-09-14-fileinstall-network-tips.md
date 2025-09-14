@@ -131,7 +131,7 @@ env | grep -i fcitx//验证结果
 ```
 
 - **snap特性**
-1. 进阶检查命令
+1. **进阶检查命令**
 ```
 #snap安全隔离机制
 1. 直接检查二进制文件
@@ -246,7 +246,7 @@ sudo /usr/lib/snapd/snap-confine snap.code.code /usr/bin/env --version
 snap run --shell code env | head -5
 ```
 
-2. 双重安全机制
+2. **双重安全机制**
 - **AppArmor安全策略enforcement**
 1. enforce模式，违规阻止
 2. complain模式，违规放行
