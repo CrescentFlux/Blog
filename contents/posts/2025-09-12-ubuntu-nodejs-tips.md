@@ -98,11 +98,11 @@ settings sync设置同步：微软或者github账号登陆，所有的设置插�
 3. 编辑配置文件settings.json
 
 {//关闭所有类型的UNICODE高亮
-    "editor.unicodeHighlight,ambiguousCharacters:false,
-    "editor.unicodeHighlight.invisableCharacters:false,
-    "editor.unicodeHighlight.nonBasicASCII:false,
-    "editor.unicodeHighlight.includeComments:false,
-    "editor.unicodeHighlight.includeStrings:false,
+    "editor.unicodeHighlight,ambiguousCharacters":false,
+    "editor.unicodeHighlight.invisableCharacters":false,
+    "editor.unicodeHighlight.nonBasicASCII":false,
+    "editor.unicodeHighlight.includeComments":false,
+    "editor.unicodeHighlight.includeStrings":false,
 }
 ```
 
