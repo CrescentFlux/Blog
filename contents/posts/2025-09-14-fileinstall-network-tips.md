@@ -1,4 +1,4 @@
-## 理解snap
+# 理解snap
 - **获取最新版本**
 - **工作机制核心理解**
 1. 接口是snap包获取特定权限的系统通道,snag接口必须同时存在于plug和slot端
@@ -324,13 +324,6 @@ sudo swapoff -a
 sudo systemctl start apparor
 ```
 
-
-
-
-
-
-
-
 ## --classic模式
 - snap 包可以不受严格的沙盒限制相当于有可能的权限，interface表示真正拥有的权限
 - 绕过接口权限检查直接使用系统环境
@@ -359,4 +352,45 @@ sudo apt install fcitx5 etc
 chmod +x 软件名.AppImage
 ./软件名称.appimage
 
+```
+
+## 多个版本冲突问题解决方案
+- deb版排序在前
+```
+echo $PATH | grep /usr/bin
+```
+- 查看所有可能的code命令
+```
+type -a code
+code --version
+which code
+ls -la $(which code)
+dpkg -l |grep code
+snap list | grep code
+```
+- 杀死所有冲突进程
+```
+1.强制停止所有进程
+pkill -9 -f "code"
+pkill -9 -f "vscode"
+pkill -9 -f "electron"
+2.确认没有残留进程
+ps aux | grep -i code
+```
+- 移除多余版本
+```
+1. sanp
+sudo snap remove code
+rm -rf ~/snap/code
+2. apt
+sudo apt remove code
+# 清除可能的残留的配置
+rm -rf ~/.config/code
+rm -rf ~/.vscode
+```
+- 确保deb正常
+```
+sudo apt update
+sudo apt install --reinstall code
+sudo apt install -f
 ```
