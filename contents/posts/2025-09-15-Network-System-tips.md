@@ -8,12 +8,12 @@ ip addr show  / ifconfig
 - 手动启动网卡
 sudo ip link set wp-name up
 
-3. 连接网络
+2. 连接网络
 sudo dhclient
 - 安装无线工具
 sudo apt install wireless-tools iw
 
-4.连接wifi
+3.连接wifi
 - 查看可用的设备
 sudo iw dev
 - 扫描附近的网络
@@ -25,7 +25,7 @@ sudo wpa_supplicant -i wlan0 -c /etc/wpa_supplicant.conf -B
 - 检查wifi连接状态
 sudo iw dev wlan0 link
 
-5.设置ip地址和门牌号
+4.设置ip地址和门牌号
 - 获取ip地址
 sudo dhclient wlan0
 ip neigh show
@@ -33,15 +33,15 @@ ip neigh show
 sudo ip addr add 路由器地址 dev 无线网卡名称
 sudo ip addr add 111.123.123.100/25 dev 网卡名称
 
-6. 设置网关中转站
+5. 设置网关中转站
 - sudo ip route add default via 路由器ip地址
 sudo ip route add default via 111.123.1.1
 
-7.设置dns智能导航仪,负责把网络上的域名翻译解析成IP地址
+6.设置dns智能导航仪,负责把网络上的域名翻译解析成IP地址
 - 手动添加一个众所周知的可靠的DNS地址写入系统的DNS配置文件
 echo "nameserver 1.1.1.1" | sudo tee /etc/resolv.conf
 
-8.测试结果
+7.测试结果
 - 测试网络连接
 ping -c 1.11.1.1
 - 尝试连接
@@ -50,7 +50,7 @@ sudo iwconfig wpname essid "your-wifi" "password"
 nslookup baidu.com
 ping -c baidu.com
 
-9.诊断修复工具
+8.诊断修复工具
 - 安装网络诊断工具
 sudo apt install curl wget net-tools//用curl测试网络是否真的连接通
 - 检查网络驱动
