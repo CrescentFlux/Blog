@@ -7,7 +7,7 @@ sudo apt update
 sudo apt install curl
 curl version
 #安装nvm(.nvm/)官方脚本install.sh将下载的内容通过管道传递给bash来运行
-curl -o- https://raw.githubusercontent.com/nvm/v0.39.7/install.sh |bash
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
 #关闭终端或者运行，安装脚本会将初始代码添加到./bashrc中
 source ~/.bashrc
 nvm --version
