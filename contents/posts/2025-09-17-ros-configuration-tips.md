@@ -53,7 +53,7 @@ ros2 run rqt_graph rqt_gragh(ROS2新工具)
 ```
 
 ## 网络连接问题注意事项
-### **1.为代理配置Terminal网络环境(curl,wget,apt)**
+### **1. 为代理配置Terminal网络环境(curl,wget,apt)**
 1. 找到代理端口号(Port)
 ```
 - 查找正在监听的端口号
@@ -88,7 +88,7 @@ unset http_proxy
 unset https_proxy
 sudo apt update
 ```
-### **2.sudo权限继承环境变量的注意事项**
+### **2. sudo权限继承环境变量的注意事项**
 1. 注意添加sudo权限之后，环境变量可能会失效,需要让sudo继承代理环境
 - 配置sudoers,让sudo自动继承代理环境变量
 ```
@@ -109,8 +109,8 @@ sudo curl -sSL https://raw.githubusercontent.com/ros/master/ros/ros.asc -o ~/ros
 sudo mv ~/ros.asc /usr/share/keyrings/ros-archive-keyring.gpg
 ```
 
-### 3.软件源验证及准备工作
-#### 3.1验证软件源是否被成功添加步骤
+### 3. 软件源验证及准备工作
+#### 3.1 验证软件源是否被成功添加步骤
 1. 临时关闭代理
 ```
 -删除旧密钥
@@ -136,7 +136,7 @@ apt-cache policy | grep packages.ros.org
 -正确位置名称
 http://packages.ros.org/ros2/ubuntu noble InRelease[number]
 ```
-#### 3.2准备工作
+#### 3.2 准备工作
 - **源列表文件唯一作用是告诉系统应该去哪里找软件，它本身不包含如何验证安全性的信息**
 ```
 1. 自动查询电脑的硬件和系统版本，生成地图
@@ -149,8 +149,8 @@ $(dpkg--print-architecture) && echo$UBUNTU_CODENAME
 sudo tee /etc/apt/sources.list.d/ros.list(源列表文件)
 ```
 
-###  4.公钥(ros.asc)验证
-#### **4.1基本概念**
+###  4. 公钥(ros.asc)验证
+#### **4.1 基本概念**
 - **公钥的唯一作用是让系统学会如何验证签名，它本身不包含任何要去哪里下载软件的信息**
 - **apt update只下载清单，并且验证清单的签名**
 - apt是非常注重安全的工具，它下载了ROS提供的软件列表之后，会用之前下载的官方印章GPG公钥去核对列表的数字签名；
@@ -158,7 +158,7 @@ sudo tee /etc/apt/sources.list.d/ros.list(源列表文件)
 - 密钥指纹 ：某个特定公钥的shortened哈希值，唯一，用于快速，精确的定位；指纹是公钥的内在属性；
 - 逻辑：在ROS的仓库拿到一份带有防伪盖章(指纹号)的最新的产品总清单(记录了名称，版本号，以及它们之间的依赖关系)，然后比对官方样本册里的指纹号是否存在并且一致进行真伪验证;
 
-#### 4.2其他验证方法
+#### 4.2 其他验证方法
 - 单独查询某个指纹号是否在全球密钥服务器管理局的信息，然后公示;
 - 具体步骤
 ```
@@ -170,7 +170,7 @@ sudo gpg --homedir /tmp --nodefault-keyring --keyring /etc/apt/trusted.gpg.d/ros
 3.更新
 sudo apt update
 ```
-#### 4.3密钥文件路径及排查方法
+#### 4.3 密钥文件路径及排查方法
 - **排查**
 ```
 1. 检查密钥文件是否真的在系统里
@@ -197,7 +197,7 @@ sudo mv /etc/apt/trusted.gpg.d/ros-archive-keyring.gpg /usr/share/keyrings/
 sudo sed -i 's|/etc/apt/trusted.gpg.d/ros-archive-keyring.gpg|/usr/share/keyrings/ros-archive-kering.gpg' /etc/apt/sources.lists.d/ros2.list
 ```
 
-### 5.SSL/TLS通信
+### 5. SSL/TLS通信
 - **基本流程**
 1. 本地发出接头信号(Client Hello)并且宣告支持的加密算法套件类型(A/B/C),并且生成一个随机数挑战码(client Random)用于后续生成最终钥匙，确保每次对话的钥匙都不同；
 2. ROS服务器回应(Server Hello + Certificate)并且出示证件(SSL证书，上面有证书颁发机构CA的签名);并且告诉它的随机数挑战码(Server Random);
