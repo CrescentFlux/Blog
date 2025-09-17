@@ -40,15 +40,18 @@ rosdep update
 
 - demo测试
 ```
-1.启动小海龟仿真器(一个终端)
-ros2 run turtlessim turtlesim_node
+1.开启新的终端窗口加载新的环境变量
+source /opt/ros/jazzy/setup.bash
+printenv | grep ROS
 
-2.启动键盘控制节点(另外一个终端)
+2.启动ROS核心
+ros2 run turtlesim turtlesim_node
+
+3.启动键盘控制节点(另外一个终端)
 ros2 run turtlesim turtle_teleop_key
 
-3.查看节点关系图
-rqt_graph(终端)
-ros2 run rqt_graph rqt_gragh(ROS2新工具)
+3.查看内部发生什么
+ros2 topic list
 
 ```
 
