@@ -130,9 +130,26 @@ client_socket.connect(('127.0.0.1',12345))
 print( "连接成功")
 
 ```
-- 移动文件防止以外覆盖
+- 移动文件注意事项
 ```
+1.防止意外覆盖
+sudo apt-get update
+sudo apt-get install rsync -y
+which rsync
+rsync --version
 rsync -av ~/桌面/path/socket{1,2,3}/ scripts/path/
+
+2.创建软链接
+~/Desktop   代替  ~/桌面
+~/Projects  代替  ~/桌面/My-Python-Projects
+~/Blog      代替  ~/桌面/Blog
+# 运行这些命令一次性创建所有链接
+ln -sf ~/桌面 ~/Desktop
+ln -sf ~/桌面/My-Python-Projects ~/My-Python-Projects
+ln -sf ~/桌面/Blog ~/Blog
+
+3.直接移动
+cp -r ~/桌面/Path/socket1 ~/桌面/Path/scripts/
 ```
 
 
