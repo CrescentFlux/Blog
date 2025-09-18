@@ -90,8 +90,8 @@ HTTPS:加密的查询需要的ip地址
 ```
 
 **注意事项**
-- 服务端和客户端启动顺序：先启动服务端，再启动客户端
-- 解决路径不存在的注意事项
+- **服务端和客户端启动顺序：先启动服务端，再启动客户端**
+- **Unix socket解决路径不存在的注意事项(IPC)**
 ```
 1. 查看当前路径权限 ls -ld
 
@@ -113,6 +113,22 @@ if not os.path.exists(socket_path):
     print("错误，服务端未启动！")
     print("请先运行服务端程序，然后再运行客户端")
     exit()
+```
+- **TCP Socket注意事项**
+```
+- 服务端
+server_socket = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
+host = "127.0.0.1"
+port = 12345
+server_socket.bind((host,port))
+server_socket.listen(1)
+print(f" 服务器启动在{host}:{port}")
+
+-客户端
+client_socket = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
+client_socket.connect(('127.0.0.1',12345))
+print( "连接成功")
+
 ```
 - 移动文件防止以外覆盖
 ```
