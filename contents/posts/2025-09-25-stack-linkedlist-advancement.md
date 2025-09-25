@@ -14,13 +14,19 @@
 
 |操作	|栈(链表实现)|	数组	|队列|
 ---|---|---|---
-|插入元素|	O(1)	|O(1)或O(n)|	
-|删除元素|	O(1)	|O(n)	|
-|随机访问|	o(n)	|O(1)	|
-|查看顶部/头部|	o(1)|o(1)	|
+|插入元素|	O(1)	|O(1)或O(n)|O(1)|	
+|删除元素|	O(1)	|O(n)	|O(1)|
+|随机访问|	o(n)	|O(1)	|O(n)|
+|查看顶部/头部|	o(1)|o(1)	|O(1)|
 
 ## 注意事项
 1. 混淆点
+```
+栈的结构：
+- 栈顶（top） → [C] ⇄ [B] ⇄ [A] → null
+   ↑               ↑               ↑
+pop/push都在这里 中间元素         栈底
+```
 - top 是栈类自己的属性；永远指向最上面的栈顶元素,同时可以调用next属性,this.top 永远指向当前的栈顶
 - 每个元素都有next指针
 - this.top：栈类的属性，是一个"指针变量"
@@ -167,6 +173,43 @@ class Stack {
 
 ```
 ```
+双向链表实现栈的两种方式
+委托链表
+class Stack {
+    constructor() {
+        this.list = new DoublyLinkedList();
+    }
+    
+    push(item) {
+        this.list.addTask(item); 
+    }
+    
+    pop() {
+        if (this.isEmpty()) {    
+            return null;
+        }
+        const item = this.list.head.data;
+        this.list.deleteFromHead();  
+        return item;
+    }
+    
+    peek() {
+        if (this.isEmpty()) {    
+            return null;
+        }
+        return this.list.head.data;
+    }
+    
+    isEmpty() {
+        return this.list.size === 0; 
+    }
+    
+    size() {
+        return this.list.size;
+    }
+}
+```
+```
 括号匹配：
 栈的LIFO特性正好匹配括号的嵌套结构
 遇到左括号push，遇到右括号pop，最后检查栈是否为空
@@ -278,11 +321,6 @@ function redo() {
 
 ## 注意事项
 1. 混淆点
-- 双向链表通常维护tail（尾指针），从尾部操作也很方便;双向链表通过维护tail指针，用少量额外空间换来了尾部操作的O(1)时间复杂度
-- 在尾部添加节点：双向链表（直接操作tail，无需遍历）;单向链表（需要遍历到最后）;
-- 反向遍历：可以从tail开始，用prev指针倒着走
-- 删除节点更方便：要删除某个节点，直接修改它前后节点的指针就行
-- 尾部操作高效：因为有tail指针，在尾部添加节点是O(1)时间
 - 节点实现
 ```
 head → [A] <--> [B] ← tail
@@ -290,6 +328,11 @@ head → [A] <--> [B] ← tail
     prev=null  prev=A
     next=B     next=null
 ```
+- 双向链表通常维护tail（尾指针），从尾部操作也很方便;双向链表通过维护tail指针，用少量额外空间换来了尾部操作的O(1)时间复杂度
+- 在尾部添加节点：双向链表（直接操作tail，无需遍历）;单向链表（需要遍历到最后）;
+- 反向遍历：可以从tail开始，用prev指针倒着走
+- 删除节点更方便：要删除某个节点，直接修改它前后节点的指针就行
+- 尾部操作高效：因为有tail指针，在尾部添加节点是O(1)时间
 - 建立双向连接的逻辑：每个新节点都要同时设置好向前和向后的指针
 - 赋值顺序从右向左,逻辑理解从左向右
 - tail是动态的，每次可能指向不同的节点
@@ -301,7 +344,7 @@ head → [A] <--> [B] ← tail
 - this.tail.next的存在是临时状态：在添加过程中，原来的尾节点暂时有next指向新节点，等添加完成后，新节点成为新的尾节点（next为null）
 - 优势：其他线程中tail被修改，B→C的连接已经建立，不会出现孤岛节点。
 ```
-- **先获取引用，再修改指针，操作顺序会影响中间状态**-"防御性编程"的思想：尽量减少系统处于不一致状态的时间。
+- **先获取引用，再修改指针，操作顺序会影响中间状态**-"防御性编程"思想：尽量减少系统处于不一致状态的时间。
 
 2. 代码实现
 ```
@@ -344,6 +387,7 @@ printAllTasks() {
             current = current.next;}
 
 deleteFromTail() {
+    //从尾部删除
     if (this.tail === null) {
         console.log("链表为空！");
         return false;
@@ -363,6 +407,29 @@ deleteFromTail() {
     this.size--;
     return true;
 }
+
+deleteFromHead() {
+    //从头部删除
+        if (this.head === null) {
+            return null; // 链表为空
+        }
+        
+        const item = this.head.data;
+        
+        if (this.head === this.tail) {
+            // 只有一个节点
+            this.head = null;
+            this.tail = null;
+        } else {
+            // 多个节点，基本逻辑：下一个节点直接覆盖前一个节点实现从头部删除
+            this.head = this.head.next;
+            this.head.prev = null;
+        }
+        
+        this.size--;
+        return item;
+    }
+
 //尾部添加：旧节点→新节点 先建立（因为新节点后面是null，没有其他节点受影响）
 //中间插入：新节点→后节点 先建立（为了在修改前保存后节点的引用）
 insertAtHead(taskText) {
@@ -454,4 +521,320 @@ reverse() {
     }
     this.head = prev;                 // 最后prev就是新的头节点
 }
+```
+
+#  队列
+## 基本概念
+- 在尾部rear添加节点（入队enqueue）;在头部(front)删除节点（出队dequeue）
+- FIFO  First In, First Out
+- 队列是"包装器"而非"新数据结构",唯一属性就是包装的链表
+- 栈和队列对比
+
+|特性	|栈（Stack）	|队列（Queue）|
+---|---|---
+|原则	|LIFO（后进先出）|	FIFO（先进先出）|
+|插入端	|顶部（同一端）	|尾部|
+|删除端|	顶部（同一端）|	头部|
+|应用	|函数调用、撤销|	消息处理、BFS|
+
+
+## 注意事项
+1. 混淆点
+- 结构
+```
+栈顶:队首（front） → [A] ⇄ [B] ⇄ [C] → 栈底:队尾（rear）
+   ↑               ↑               ↑
+dequeue从这里   中间元素         enqueue从这里
+出队                          入队
+```
+- 使用双向链表实现的优势：
+```
+入队（尾部添加）：O(1)时间 ← 有tail指针
+出队（头部删除）：O(1)时间 ← 有head指针
+```
+- 队列并不直接操作节点，而是通过双向链表来实现功能
+```
+enqueue() → 调用链表的addTask()（尾部添加）
+dequeue() → 调用链表的deleteFromHead()（头部删除）
+peek() → 直接访问list.head.data
+```
+- 指针顺序问题
+```
+1.入队顺序
+front → [A] ← rear
+enqueue("B") 后：
+front → [A] ⇄ [B] ← rear
+enqueue("C") 后:
+front → [A] ⇄ [B] ⇄ [C] ← rear
+2.出队顺序
+dequeue() 后（A出队）：front → [B] ⇄ [C] ← rear
+dequeue() 后（B出队）：front → [C] ← rear
+```
+- 队列和栈的指针区别
+```
+1.
+因为队列是先进先出：委托给链表
+需要快速访问最早进来的元素（front指针）
+需要快速在末尾添加新元素（rear指针）
+而栈是后进先出，所有操作都在同一端，所以只需要一个top指针。自己管理指针
+2.
+栈的操作都在同一端，逻辑简单，自己管理更直接
+队列需要头尾两端操作，双向链表已经完美支持这种模式
+代码复用的原则：不要重复造轮子
+
+```
+- 注意先定义类
+```
+lass Queue {
+    // ...队列定义
+}
+// 然后才能使用
+const myQueue = new Queue(); 
+```
+- 队列是一个"接口适配器":
+```
+1.重用双向链表的所有能力
+2.提供新的操作语义（FIFO vs 通用链表）
+3.隐藏复杂的指针操作，提供简单API
+```
+2. 代码实现
+```
+//---- 基础实现-----//
+class Queue {
+    constructor() {
+        this.list = new DoublyLinkedList();  // 唯一属性就是包装的链表
+        // 没有 this.top, this.front, this.rear 等新属性！
+    }
+}
+class Queue {
+    constructor() {
+        this.list = new DoublyLinkedList();  // 委托给链表
+    }
+    enqueue(item) {
+        this.list.addTask(item);  // 调用链表的方法
+    }
+}
+//通过链表实现队列
+class DoublyLinkedList {
+    constructor() {
+        this.head = null;
+        this.tail = null;
+        this.size = 0;
+    }  
+    addTask(item) {
+        const newNode = new DoublyNode(item);
+        if (this.head === null) {
+            this.head = newNode;
+            this.tail = newNode;
+        } else {
+            this.tail.next = newNode;
+            newNode.prev = this.tail;
+            this.tail = newNode;
+        }
+        this.size++;
+    }
+    
+    deleteFromHead() {
+        if (this.head === null) {
+            return null;
+        }
+        
+        const item = this.head.data;
+        
+        if (this.head === this.tail) {
+            this.head = null;
+            this.tail = null;
+        } else {
+            this.head = this.head.next;//指针指向改变直接覆盖上一个数据
+            this.head.prev = null;
+        }
+        
+        this.size--;
+        return item;
+    }
+}
+//队列定义方式通常直接委托链表类
+class Queue {
+    constructor() {
+        this.list = new DoublyLinkedList();
+    }
+     // 入队 - 在链表尾部添加
+    enqueue(item) {
+        this.list.addTask(item);
+    }
+    // 出队 - 从链表头部删除并返回
+    dequeue() {
+        if (this.isEmpty()) {
+            return null;
+        }
+        return this.list.deleteFromHead();//// 委托给链表处理所有逻辑
+    }
+
+    //出队方法二：
+     dequeue() {
+        if (this.isEmpty()) {
+            return null;
+        }
+        const item = this.list.head.data;  // 获取头部数据
+        this.list.deletefromhead();                    // 删除头部节点
+        return item;
+    }
+//方法对比：1.避免重复检查：队列的isEmpty()和链表的空检查可能重复2.单一责任原则：删除逻辑应该由链表负责3.代码更简洁：一行 vs 四行
+
+    peek() {
+        if (this.isEmpty()) {
+            return null;
+        }
+        return this.list.head.data;
+    }
+    
+    isEmpty() {
+        return this.list.size === 0;
+    }
+    
+    size() {
+        return this.list.size;
+    }
+}
+
+//-----广度优先搜索----在树或图中按层次遍历//
+queue.enqueue(根节点);
+while (!queue.isEmpty()) {
+    const node = queue.dequeue();
+    // 处理当前节点
+    // 将子节点入队
+}
+
+//-----处理用户请求--------//
+queue.enqueue("用户A的请求");
+queue.enqueue("用户B的请求");
+queue.enqueue("用户C的请求");
+
+// 按顺序处理
+while (!queue.isEmpty()) {
+    const request = queue.dequeue();
+    processRequest(request);
+}
+
+
+
+//-------打印任务队列---------//
+const myQueue = new Queue();
+myQueue.enqueue("第一个顾客");
+myQueue.enqueue("第二个顾客");
+// 不要再次用 const 声明 myQueue
+-redeclaration of const myQueue 错误：为重复声明同一个变量
+ const myQueue = new Queue();
+ myQueue.enqueue("第一个顾客");
+-Uncaught SyntaxError: redeclaration of const myQueue
+    <anonymous> debugger eval code:1
+在浏览器控制台中，如果你多次运行const myQueue = new Queue()，就会报这个错误。
+因为：const声明的变量不能重复定义，而控制台会保留之前执行的变量。
+-》刷新页面（最简单）
+-》使用let而不是const，let myQueue = new Queue();myQueue.enqueue("第一个顾客");
+// 如果需要重新测试，可以先赋值为null：myQueue = null;
+myQueue = new Queue();  // 现在可以重新创建了
+-》使用不同的变量名const myQueue1 = new Queue();myQueue1.enqueue("第一个顾客");const myQueue2 = new Queue();
+myQueue2.enqueue("新的顾客");
+
+// 完整的可运行代码{打印队列+用双向链表的形式实现括号匹配}
+// 1. 所有类定义
+class DoublyNode {
+    constructor(data) {
+        this.data = data;
+        this.next = null;
+        this.prev = null;
+    }
+}
+
+class DoublyLinkedList {
+    constructor() {
+        this.head = null;
+        this.tail = null; 
+        this.size = 0;
+    }
+    
+    addTask(item) {
+        const newNode = new DoublyNode(item);
+        if (this.head === null) {
+            this.head = newNode;
+            this.tail = newNode;
+        } else {
+            this.tail.next = newNode;
+            newNode.prev = this.tail;
+            this.tail = newNode;
+        }
+        this.size++;
+    }
+    
+    deleteFromHead() {
+        if (this.head === null) return null;
+        const item = this.head.data;
+        if (this.head === this.tail) {
+            this.head = null;
+            this.tail = null;
+        } else {
+            this.head = this.head.next;
+            this.head.prev = null;
+        }
+        this.size--;
+        return item;
+    }
+}
+
+class Stack {
+    constructor() {委托给链表
+        this.list = new DoublyLinkedList();
+    }
+    push(item) { this.list.addTask(item); }
+    pop() { return this.list.deleteFromHead(); }
+    peek() { return this.isEmpty() ? null : this.list.head.data; }
+    isEmpty() { return this.list.size === 0; }
+    size() { return this.list.size; }
+}
+
+class Queue {
+    constructor() {
+        this.list = new DoublyLinkedList();
+    }
+    enqueue(item) { this.list.addTask(item); }
+    dequeue() { return this.list.deleteFromHead(); }
+    peek() { return this.isEmpty() ? null : this.list.head.data; }
+    isEmpty() { return this.list.size === 0; }
+    size() { return this.list.size; }
+}
+
+// 2. 括号匹配函数
+function isParenthesesBalanced(str) {
+    const stack = new Stack();
+    for (let i = 0; i < str.length; i++) {
+        const char = str[i];
+        if (char === '(') {
+            stack.push(char);
+        } else if (char === ')') {
+            if (stack.isEmpty()) return false;
+            stack.pop();
+        }
+    }
+    return stack.isEmpty();
+}
+
+// 3. 测试代码
+console.log("=== 测试开始 ===");
+
+// 测试栈
+console.log("测试括号匹配:");
+console.log("(())", isParenthesesBalanced("(())"));  // true
+console.log("())", isParenthesesBalanced("())"));    // false
+
+// 测试队列
+console.log("测试队列:");
+const testQueue = new Queue();  // 用testQueue而不是myQueue
+testQueue.enqueue("第一个顾客");
+testQueue.enqueue("第二个顾客");
+console.log("队首:", testQueue.peek());
+console.log("出队:", testQueue.dequeue());
+console.log("新队首:", testQueue.peek());
+console.log("=== 测试结束 ===");
+
 ```
