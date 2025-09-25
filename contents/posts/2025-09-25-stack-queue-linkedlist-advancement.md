@@ -1,4 +1,4 @@
-# 栈 stack
+# 栈 (stack)
 ## 基本特性
 - 栈是一种抽象数据类型，它可以用不同的底层数据结构实现
 - LIFO（后进先出）Last In, First Out：最后进去的元素最先出来
@@ -518,7 +518,7 @@ reverse() {
 }
 ```
 
-#  队列
+#  队列（Queue）
 ## 基本概念
 - 在尾部rear添加节点（入队enqueue）;在头部(front)删除节点（出队dequeue）
 - FIFO  First In, First Out
