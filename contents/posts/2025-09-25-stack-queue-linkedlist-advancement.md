@@ -63,7 +63,7 @@ this.top = newNode;  // stack.top指向C
 ```
 tack.top.next 在空栈时=undefined，this.top=null。
 ```
-- - 栈是一个临时存储结构，它的核心价值在于：
+- 栈是一个临时存储结构，它的核心价值在于：
 ```
 记录当前状态（比如函数调用栈）
 提供撤销操作（比如编辑器的undo）
@@ -88,8 +88,6 @@ pop:  从头部删除节点
 2.在链表尾部操作（需要遍历，O(n)时间
 
 ```
-- 用双向链表实现栈
-我们将利用双向链表在头部操作O(1)的优势：
 
 2. 代码实现
 ```
@@ -159,7 +157,7 @@ class Stack {
         this.size = 0;
     }
     
-    //打印栈内容（调试用）
+    //打印栈内容
     print() {
         let current = this.top;
         const elements = [];
@@ -173,8 +171,7 @@ class Stack {
 
 ```
 ```
-双向链表实现栈的两种方式
-委托链表
+双向链表实现栈：委托链表
 class Stack {
     constructor() {
         this.list = new DoublyLinkedList();
@@ -321,7 +318,7 @@ function redo() {
 
 ## 注意事项
 1. 混淆点
-- 节点实现
+- 结构
 ```
 head → [A] <--> [B] ← tail
        ↑        ↑
@@ -344,7 +341,7 @@ head → [A] <--> [B] ← tail
 - this.tail.next的存在是临时状态：在添加过程中，原来的尾节点暂时有next指向新节点，等添加完成后，新节点成为新的尾节点（next为null）
 - 优势：其他线程中tail被修改，B→C的连接已经建立，不会出现孤岛节点。
 ```
-- **先获取引用，再修改指针，操作顺序会影响中间状态**-"防御性编程"思想：尽量减少系统处于不一致状态的时间。
+- **先获取引用，再修改指针，操作顺序会影响中间状态；"防御性编程"思想：尽量减少系统处于不一致状态的时间**
 
 2. 代码实现
 ```
@@ -485,8 +482,6 @@ insertTaskAtIndex(index, taskText) {
         return true;
     }
 }
-
-
 }
 ```
 
