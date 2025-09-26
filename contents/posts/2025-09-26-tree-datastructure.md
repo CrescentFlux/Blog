@@ -253,7 +253,36 @@ function E() {
 }
 
 //八皇后问题
-
+function solveNQueens(n) {
+    const result = [];
+    function backtrack(row, columns, diagonals1, diagonals2) {
+        if (row === n) {
+            // 找到解
+            result.push([...columns]);
+            return;
+        }
+        for (let col = 0; col < n; col++) {
+            // 检查是否冲突
+            if (columns.includes(col) || 
+                diagonals1.includes(row - col) || 
+                diagonals2.includes(row + col)) {
+                continue; // 冲突，跳过
+            }
+            // 做出选择
+            columns.push(col);
+            diagonals1.push(row - col);
+            diagonals2.push(row + col);
+            // 递归探索下一行
+            backtrack(row + 1, columns, diagonals1, diagonals2);
+            // 撤销选择（回溯）
+            columns.pop();
+            diagonals1.pop();
+            diagonals2.pop();
+        }
+    }
+    backtrack(0, [], [], []);
+    return result;
+}
 
 
 //----二叉树创建和测试-----//
