@@ -257,12 +257,13 @@ function solveNQueens(n) {
     const result = [];
     function backtrack(row, columns, diagonals1, diagonals2) {
         if (row === n) {
-            // 找到解
+            // 所有行都放置完毕
             result.push([...columns]);
             return;
         }
         for (let col = 0; col < n; col++) {
-            // 检查是否冲突
+            //O(1) 直接查表，把计算提前到了选择阶段，而不是在检查阶段重新计算；用空间换时间；多用了数组的空间，但大幅减少了重复计算。主要是冲突检查的效率不同；//
+            // 检查是否冲突;尝试当前行的每一列
             if (columns.includes(col) || 
                 diagonals1.includes(row - col) || 
                 diagonals2.includes(row + col)) {
@@ -282,6 +283,40 @@ function solveNQueens(n) {
     }
     backtrack(0, [], [], []);
     return result;
+}
+//解法2：
+function solveNQueens(n) {
+    const solutions = [];
+    
+    function backtrack(row, placement) {
+        // 终止条件：所有行都放置完毕；placement数组记录每行皇后所在的列位置
+        if (row === n) {
+            solutions.push([...placement]);
+            return;
+        }  
+        // 尝试当前行的每一列
+        for (let col = 0; col < n; col++) {
+            if (isValid(placement, row, col)) {
+                placement.push(col);        // 做出选择：在当前行放置皇后
+                backtrack(row + 1, placement); // 递归下一行
+                placement.pop();             // 撤销选择：回溯
+            }
+        }
+    }
+    function isValid(placement, row, col) {//O(n) 每次遍历
+        for (let i = 0; i < placement.length; i++) {
+            const existingCol = placement[i];
+            // 检查同一列
+            if (existingCol === col) return false;
+            // 检查主对角线：行差 = 列差
+            if (i - existingCol === row - col) return false;
+            // 检查副对角线：行差 = -列差
+            if (i + existingCol === row + col) return false;
+        }
+        return true;  // 所有检查通过，位置有效
+    }
+    backtrack(0, []);
+    return solutions;
 }
 
 
@@ -503,6 +538,4 @@ findKthSmallest(k, node = this.root) {
     inOrderTraversal(node);
     return result[k - 1];  // 第k小对应索引k-1
 }
-
-
 ```
