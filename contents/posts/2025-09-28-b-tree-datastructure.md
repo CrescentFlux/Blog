@@ -190,39 +190,654 @@ B树是递归结构：
 提升关键字 = keys[midIndex]          // 正中间的关键字  
 右节点 = keys[midIndex+1 到 最后]    // 中间关键字之后的部分
 ```
+- 合并子节点引用
+```
+    保持树结构完整
+    维持B树性质：内部节点的子节点数量必须等于键数量+1
+    避免内存泄漏：右子节点将被删除，必须转移其所有子节点
+如果我们要合并的节点是内部节点（不是叶子节点），那么它们有子节点引用需要一起合并，否则会破坏树的结构
+B树删除操作中的预防性加强，确保在递归删除前子节点有足够的键
+```
+- 对比
+```
+B树：预防性策略（防止变空）
+// B树的逻辑：在变空之前预防
+if (node.children[i].keys.length <= this.MIN_KEYS) {  // 快要变空了！
+    this._fillChild(node, i);  // 赶紧加强
+}
+return this.delete(key, node.children[i]);  // 现在安全了
+```
 
-
-
+```
+B+树：修复性策略(变空后修复)
+// B+树的典型逻辑：先删除，如果变空了再修复
+let deleted = this._deleteFromNode(node, key);
+if (node.keys.length < this.MIN_KEYS) {  // 已经变空了！
+    this._handleUnderflow(node);  // 赶紧修复
+}
+```
 ### 代码实现
 ```
 class BTreeNode {
     constructor(order) {
-        this.order = order;        // B树的阶数最大子节点数m，最小子节点数m/2
-        this.keys = [];           // 存储关键字的数组，当前节点的关键字
-        this.children = [];       // 存储子节点的数组，本身属性是字节点指针
+        this.order = order;        // B树的阶数
+        this.keys = [];           // 存储关键字的数组
+        this.children = [];       // 存储子节点的数组
         this.isLeaf = true;       // 是否是叶子节点
     }
     
     // 判断节点是否已满
     isFull() {
-        return this.keys.length >=this.order-1 ;每个节点最多几个关键字
+        return this.keys.length >= this.order - 1;
     }
-    // 判断节点关键字是否过少；每个节点至少⌈m/2⌉-1个关键字 
-    isMin() {
-        return this.keys.length <=this.order/2-1;
+    
+    // 关键字查找
+    findKey(key) {
+        let i = 0;
+        while (i < this.keys.length && key > this.keys[i]) {
+            i++;
+        }
+        return i;
     }
 }
 
-//关键字查找：多路比较之后找到第一个大于或等于key的索引的位置
-findKey(key) {
-    let i = 0;
-    // 找到第一个大于或等于key的位置//磁盘IO的优化
-    while (i < this.keys.length && key > this.keys[i]) {
-        i++;
+class BTree {
+    constructor(order = 3) {
+        this.order = order;
+        this.MIN_KEYS = Math.ceil(order / 2) - 1;  // 最小键数
+        this.root = new BTreeNode(order);
     }
-    return i;  // 返回关键字应该插入的索引i
+
+    // ==================== 公共接口 ====================
+    
+    /**
+     * 插入关键字
+     * @param {number} key - 要插入的关键字
+     */
+    insert(key) {
+        this._insert(key);
+    }
+    
+    /**
+     * 删除关键字
+     * @param {number} key - 要删除的关键字
+     * @returns {boolean} 是否删除成功
+     */
+    delete(key) {
+        return this._delete(key);
+    }
+    
+    /**
+     * 查找关键字
+     * @param {number} key - 要查找的关键字
+     * @returns {boolean} 是否存在
+     */
+    search(key) {
+        return this._search(key, this.root);
+    }
+    
+    /**
+     * 获取B树的高度
+     * @returns {number} 树的高度
+     */
+    getHeight() {
+        return this._getHeight(this.root);
+    }
+    
+    /**
+     * 打印B树结构（用于调试）
+     */
+    print() {
+        this._printTree(this.root, 0);
+    }
+    // 在BTree类中添加调试方法
+debugInsert(key) {
+    console.log(`\n=== 插入 ${key} ===`);
+    this.insert(key);
+    this.print();
 }
-//插入逻辑：B树的生长是向上生长
+
+debugDelete(key) {
+    console.log(`\n=== 删除 ${key} ===`);
+    const result = this.delete(key);
+    console.log(`删除结果: ${result}`);
+    this.print();
+    return result;
+}
+// 在BTree类中添加深度调试方法
+debugDetailedInsert(key) {
+    console.log(`\n🔍 === 详细插入 ${key} ===`);
+    console.log("插入前树结构:");
+    this._printTree(this.root, 0);
+    
+    this._insert(key);
+    
+    console.log("插入后树结构:");
+    this._printTree(this.root, 0);
+    console.log("=== 插入完成 ===\n");
+}
+
+// 修改验证方法，提供更多信息
+_validateNode(node, level = 0, path = "root") {
+    console.log(`验证: ${path} [${node.keys}] isLeaf:${node.isLeaf} children:${node.children.length}`);
+    
+    if (node.isLeaf && node.children.length > 0) {
+        throw new Error(`叶子节点 ${path} 有子节点: [${node.keys}]`);
+    }
+    if (!node.isLeaf && node.children.length === 0) {
+        throw new Error(`内部节点 ${path} 没有子节点: [${node.keys}]`);
+    }
+    if (node.keys.length > this.order - 1) {
+        throw new Error(`节点 ${path} 键数超出限制: [${node.keys}]`);
+    }
+    if (node !== this.root && node.keys.length < this.MIN_KEYS) {
+        throw new Error(`🚨 节点 ${path} 键数过少: [${node.keys}] level:${level}`);
+    }
+    
+    // 内部节点的子节点数量应该是 keys.length + 1
+    if (!node.isLeaf && node.children.length !== node.keys.length + 1) {
+        throw new Error(`内部节点 ${path} 子节点数量错误: keys=${node.keys.length} children=${node.children.length}`);
+    }
+    
+    // 递归验证子节点
+    if (!node.isLeaf) {
+        for (let i = 0; i < node.children.length; i++) {
+            this._validateNode(node.children[i], level + 1, `${path}.children[${i}]`);
+        }
+    }
+}
+
+    // ==================== 内部方法 ====================
+
+    /**
+     * 内部插入方法
+     */
+    _insert(key) {
+    if (this._search(key, this.root)) {
+        console.log(`⚠️ 键 ${key} 已存在，跳过插入`);
+        return;
+    }
+    
+    this._insertRecursive(this.root, key);
+    
+    // 检查根节点是否需要分裂
+    if (this.root.keys.length > this.order - 1) {
+        const newRoot = new BTreeNode(this.order);
+        newRoot.isLeaf = false;
+        newRoot.children.push(this.root);
+        this._splitChild(newRoot, 0, this.root);
+        this.root = newRoot;
+    }
+}
+
+_insertRecursive(node, key) {
+    let i = node.findKey(key);
+    
+    if (node.isLeaf) {
+        node.keys.splice(i, 0, key);
+    } else {
+        this._insertRecursive(node.children[i], key);
+        
+        // 插入后检查子节点是否需要分裂
+        if (node.children[i].keys.length > this.order - 1) {
+            this._splitChild(node, i, node.children[i]);
+        }
+    }
+}
+
+    /**
+     * 分裂子节点
+     */
+   _splitChild(parent, index, child) {
+    console.log(`🔧 开始分裂: child=[${child.keys}], length=${child.keys.length}`);
+    
+    if (child.keys.length < 2) {
+        throw new Error(`无法分裂节点: 键数不足 ${child.keys.length}`);
+    }
+    
+    const midIndex = Math.floor(child.keys.length / 2);
+    const midKey = child.keys[midIndex];
+    
+    console.log(`midIndex=${midIndex}, midKey=${midKey}`);
+    
+    const rightNode = new BTreeNode(this.order);
+    rightNode.keys = child.keys.slice(midIndex + 1);
+    
+    console.log(`右节点 keys: slice(${midIndex + 1}) = [${rightNode.keys}]`);
+    
+    if (!child.isLeaf) {
+        rightNode.children = child.children.slice(midIndex + 1);
+        rightNode.isLeaf = false;
+    } else {
+        rightNode.isLeaf = true;
+    }
+    
+    // 更新左节点
+    const leftKeysBefore = child.keys.slice(0, midIndex);
+    console.log(`左节点 keys: slice(0, ${midIndex}) = [${leftKeysBefore}]`);
+    child.keys = leftKeysBefore;
+    
+    if (!child.isLeaf) {
+        child.children = child.children.slice(0, midIndex + 1);
+    }
+    
+    // 插入到父节点
+    parent.keys.splice(index, 0, midKey);
+    parent.children.splice(index + 1, 0, rightNode);
+    parent.isLeaf = false;
+    
+    console.log(`分裂完成: 中间键=${midKey}, 左节点=[${child.keys}], 右节点=[${rightNode.keys}]`);
+}
+
+    /**
+     * 内部删除方法
+     */
+    _delete(key, node = this.root) {
+        let i = node.findKey(key);
+        
+        if (i < node.keys.length && node.keys[i] === key) {
+            if (node.isLeaf) {
+                return this._deleteFromLeaf(node, i);
+            } else {
+                return this._deleteFromInternal(node, i);
+            }
+        } else {
+            if (node.isLeaf) {
+                return false;
+            }
+            
+            if (node.children[i].keys.length <= this.MIN_KEYS) {
+                this._fillChild(node, i);
+                // 加强后可能需要调整索引
+                if (i > 0 && node.children[i].keys.length <= this.MIN_KEYS) {
+                    i--;
+                }
+            }
+            
+            return this._delete(key, node.children[i]);
+        }
+    }
+
+    /**
+     * 从叶子节点删除
+     */
+    _deleteFromLeaf(node, index) {
+        node.keys.splice(index, 1);
+        return true;
+    }
+
+    /**
+     * 从内部节点删除
+     */
+    _deleteFromInternal(node, index) {
+        const key = node.keys[index];
+        
+        if (node.children[index].keys.length > this.MIN_KEYS) {
+            const predecessor = this._getPredecessor(node.children[index]);
+            node.keys[index] = predecessor;
+            return this._delete(predecessor, node.children[index]);
+        } else if (node.children[index + 1].keys.length > this.MIN_KEYS) {
+            const successor = this._getSuccessor(node.children[index + 1]);
+            node.keys[index] = successor;
+            return this._delete(successor, node.children[index + 1]);
+        } else {
+            this._mergeChildren(node, index);
+            return this._delete(key, node.children[index]);
+        }
+    }
+
+    /**
+     * 获取前驱节点
+     */
+    _getPredecessor(node) {
+        while (!node.isLeaf) {
+            node = node.children[node.children.length - 1];
+        }
+        return node.keys[node.keys.length - 1];
+    }
+
+    /**
+     * 获取后继节点
+     */
+    _getSuccessor(node) {
+        while (!node.isLeaf) {
+            node = node.children[0];
+        }
+        return node.keys[0];
+    }
+
+    /**
+     * 合并子节点
+     */
+    _mergeChildren(node, index) {
+        const leftChild = node.children[index];
+        const rightChild = node.children[index + 1];
+        const keyToMoveDown = node.keys[index];
+        // 添加空节点检查
+    if (rightChild.keys.length === 0) {
+        // 如果右子节点为空，特殊处理
+        node.keys.splice(index, 1);
+        node.children.splice(index + 1, 1);
+        
+        if (node === this.root && node.keys.length === 0) {
+            this.root = leftChild;
+        }
+        return;
+    }
+        leftChild.keys.push(keyToMoveDown);
+        leftChild.keys.push(...rightChild.keys);
+        
+        if (!leftChild.isLeaf) {
+            leftChild.children.push(...rightChild.children);
+        }
+        
+        node.keys.splice(index, 1);
+        node.children.splice(index + 1, 1);
+        
+        if (node === this.root && node.keys.length === 0) {
+            this.root = leftChild;
+        }
+    }
+
+    /**
+     * 加强子节点
+     */
+    _fillChild(node, childIndex) {
+        const child = node.children[childIndex];
+        
+        if (childIndex > 0 && node.children[childIndex - 1].keys.length > this.MIN_KEYS) {
+            this._borrowFromLeft(node, childIndex);
+        } else if (childIndex < node.children.length - 1 && 
+                  node.children[childIndex + 1].keys.length > this.MIN_KEYS) {
+            this._borrowFromRight(node, childIndex);
+        } else {
+            if (childIndex > 0) {
+                this._mergeChildren(node, childIndex - 1);
+            } else {
+                this._mergeChildren(node, childIndex);
+            }
+        }
+    }
+
+    /**
+     * 从左兄弟借用
+     */
+    _borrowFromLeft(node, childIndex) {
+        const child = node.children[childIndex];
+        const leftSibling = node.children[childIndex - 1];
+        
+        child.keys.unshift(node.keys[childIndex - 1]);
+        node.keys[childIndex - 1] = leftSibling.keys.pop();
+        
+        if (!child.isLeaf) {
+            child.children.unshift(leftSibling.children.pop());
+        }
+    }
+
+    /**
+     * 从右兄弟借用
+     */
+    _borrowFromRight(node, childIndex) {
+        const child = node.children[childIndex];
+        const rightSibling = node.children[childIndex + 1];
+        
+        child.keys.push(node.keys[childIndex]);
+        node.keys[childIndex] = rightSibling.keys.shift();
+        
+        if (!child.isLeaf) {
+            child.children.push(rightSibling.children.shift());
+        }
+    }
+
+    /**
+     * 内部查找方法
+     */
+    _search(key, node) {
+        const i = node.findKey(key);
+        
+        if (i < node.keys.length && node.keys[i] === key) {
+            return true;
+        }
+        
+        if (node.isLeaf) {
+            return false;
+        }
+        
+        return this._search(key, node.children[i]);
+    }
+
+    /**
+     * 获取树的高度
+     */
+    _getHeight(node) {
+        if (node.isLeaf) {
+            return 1;
+        }
+        return 1 + this._getHeight(node.children[0]);
+    }
+
+    /**
+     * 打印树结构
+     */
+    _printTree(node, level) {
+        let result = "  ".repeat(level) + `Level ${level}: [${node.keys.join(', ')}]`;
+        console.log(result);
+        
+        if (!node.isLeaf) {
+            for (const child of node.children) {
+                this._printTree(child, level + 1);
+            }
+        }
+    }
+    // 添加验证方法
+_validateNode(node, level = 0) {
+    if (node.isLeaf && node.children.length > 0) {
+        throw new Error(`叶子节点 ${level} 级有子节点: [${node.keys}]`);
+    }
+    if (!node.isLeaf && node.children.length === 0) {
+        throw new Error(`内部节点 ${level} 级没有子节点: [${node.keys}]`);
+    }
+    if (node.keys.length > this.order - 1) {
+        throw new Error(`节点键数超出限制: [${node.keys}]`);
+    }
+    if (node !== this.root && node.keys.length < this.MIN_KEYS) {
+        throw new Error(`节点键数过少: [${node.keys}]`);
+    }
+    
+    // 递归验证子节点
+    if (!node.isLeaf) {
+        for (const child of node.children) {
+            this._validateNode(child, level + 1);
+        }
+    }
+}
+
+// 在插入和删除后调用验证
+insert(key) {
+    this._insert(key);
+    this._validateNode(this.root);  // 添加验证
+}
+}
+const bTree = new BTree(3);
+
+console.log("=== 初始插入 ===");
+bTree.debugInsert(10);
+bTree.debugInsert(20);
+bTree.debugInsert(5);
+bTree.debugInsert(15);
+
+console.log("\n=== 删除测试 ===");
+bTree.debugDelete(10);
+
+console.log("\n=== 最终状态 ===");
+console.log("搜索10:", bTree.search(10));
+console.log("搜索15:", bTree.search(15));
+console.log("树高:", bTree.getHeight());
+const bTree = new BTree(3);
+
+console.log("=== 逐步插入测试 ===");
+bTree.debugInsert(10);
+bTree.debugInsert(20); 
+bTree.debugInsert(5);
+bTree.debugInsert(15);
+
+console.log("\n=== 验证最终结构 ===");
+// 期望的正确结构应该是：
+//     [10,15]    或者    [15]
+//    /   |   \         /    \
+//  [5]  [ ]  [20]    [5,10] [20]
+const bTree = new BTree(3);
+
+console.log("=== 逐步详细测试 ===");
+bTree.debugDetailedInsert(10);
+bTree.debugDetailedInsert(20);
+bTree.debugDetailedInsert(5);
+// 在插入15之前检查状态
+console.log("准备插入15前的状态:");
+bTree._validateNode(bTree.root);
+// 先暂时关闭验证，测试基本功能
+const bTree = new BTree(3);
+
+console.log("=== 测试修复后的插入 ===");
+const testKeys = [10, 20, 5, 15, 25, 30];
+
+for (const key of testKeys) {
+    console.log(`插入 ${key}`);
+    bTree.insert(key);
+    bTree.print();
+    console.log('---');
+}
+
+// 最后再验证
+console.log("最终验证:");
+try {
+    bTree._validateNode(bTree.root);
+    console.log("✅ 验证通过！");
+} catch (e) {
+    console.log("❌ 验证失败:", e.message);
+}
+const bTree = new BTree(3);
+
+// 逐步插入并详细观察
+console.log("=== 详细调试插入过程 ===");
+
+console.log("\n1. 插入 10");
+bTree.insert(10);
+bTree.print();
+
+console.log("\n2. 插入 20");
+bTree.insert(20);
+bTree.print();
+
+console.log("\n3. 插入 5");
+bTree.insert(5);
+bTree.print();
+
+console.log("\n4. 插入 15");
+bTree.insert(15);
+bTree.print();
+
+console.log("\n=== 验证最终结果 ===");
+try {
+    bTree._validateNode(bTree.root);
+    console.log("🎉 所有验证通过！B树结构正确");
+} catch (e) {
+    console.log("💥 验证失败:", e.message);
+}
+
+console.log("\n=== 搜索测试 ===");
+[10, 15, 20, 5, 25].forEach(key => {
+    console.log(`搜索 ${key}: ${bTree.search(key)}`);
+});
+// 删除测试函数
+function testDeleteOperations() {
+    const bTree = new BTree(3);
+    
+    console.log("=== B树删除功能全面测试 ===\n");
+
+    // 阶段1：准备测试数据
+    console.log("📝 阶段1：准备测试数据");
+    const testKeys = [10, 20, 5, 15, 25, 3, 8, 12, 18, 30];
+    testKeys.forEach(key => bTree.insert(key));
+    
+    console.log("初始B树结构:");
+    bTree.print();
+    console.log("初始验证:", bTree._validateNode(bTree.root) ? "通过" : "失败");
+    console.log("---\n");
+
+    // 阶段2：测试各种删除情况
+    console.log("🗑️ 阶段2：删除操作测试");
+
+    // 情况1：删除叶子节点中的键（节点仍有足够键）
+    console.log("1. 删除叶子节点键（节点仍健康）");
+    console.log("删除 3:");
+    bTree.delete(3);
+    bTree.print();
+    console.log("搜索3:", bTree.search(3));
+    console.log("---");
+
+    // 情况2：删除叶子节点中的键（需要从兄弟借）
+    console.log("2. 删除叶子节点键（需要借用）");
+    console.log("删除 8:");
+    bTree.delete(8);
+    bTree.print();
+    console.log("搜索8:", bTree.search(8));
+    console.log("---");
+
+    // 情况3：删除内部节点中的键（用后继替换）
+    console.log("3. 删除内部节点键（后继替换）");
+    console.log("删除 15:");
+    bTree.delete(15);
+    bTree.print();
+    console.log("搜索15:", bTree.search(15));
+    console.log("---");
+
+    // 情况4：删除内部节点中的键（用前驱替换）
+    console.log("4. 删除内部节点键（前驱替换）");
+    console.log("删除 20:");
+    bTree.delete(20);
+    bTree.print();
+    console.log("搜索20:", bTree.search(20));
+    console.log("---");
+
+    // 情况5：删除导致节点合并
+    console.log("5. 删除导致节点合并");
+    console.log("删除 12:");
+    bTree.delete(12);
+    bTree.print();
+    console.log("搜索12:", bTree.search(12));
+    console.log("---");
+
+    // 情况6：删除根节点
+    console.log("6. 删除根节点");
+    console.log("删除 18:");
+    bTree.delete(18);
+    bTree.print();
+    console.log("搜索18:", bTree.search(18));
+    console.log("---");
+
+    // 最终验证
+    console.log("✅ 最终验证:");
+    try {
+        bTree._validateNode(bTree.root);
+        console.log("🎉 所有删除操作后B树仍然正确！");
+    } catch (e) {
+        console.log("❌ 验证失败:", e.message);
+    }
+
+    // 剩余键检查
+    console.log("\n🔍 剩余键检查:");
+    testKeys.forEach(key => {
+        const exists = bTree.search(key);
+        console.log(`搜索 ${key}: ${exists ? "存在" : "不存在"}`);
+    });
+}
+
+// 运行测试
+testDeleteOperations();
+```
+```
+//----插入逻辑----//
 insert(key) {
     if (this.root.isFull()) {  // 检查根节点是否已满
         //分裂根节点，创建新根
@@ -234,9 +849,8 @@ insert(key) {
     this._insertNonFull(this.root, key);
 }
 
-//分裂逻辑
+//分裂逻辑：B树的生长是向上生长
 _splitChild(parent, index, child) {
-    // 参数说明 ✓ 正确
     // parent: 要分裂的节点的父节点
     // index: child在parent.children中的位置  
     // child: 实际要分裂的节点
@@ -265,4 +879,143 @@ _splitChild(parent, index, child) {
     parent.children.splice(index + 1, 0, rightNode);  // 在父节点的index+1位置插入右节点 
 }
 
+
+```
+```
+//----删除逻辑----//
+delete(key, node = this.root) {
+    let i = node.findKey(key);
+    // 情况1：关键字在当前节点中
+    if (i < node.keys.length && node.keys[i] === key) {
+        if (node.isLeaf) {
+            // 情况1A：要删除的键在当前节点中，且当前节点是叶子节点
+            return this._deleteFromLeaf(node, i);
+        } else {
+            // 情况1B：要删除的键在当前节点中，但当前节点是内部节点
+            return this._deleteFromInternal(node, i);
+        }
+    } else {
+        // 情况2：要删除的键不在当前节点中
+        if (node.isLeaf) {
+            return false; // 关键字不存在
+        }
+        // 检查子节点是否需要加强
+        if (node.children[i].keys.length <= this.MIN_KEYS) {
+            this._fillChild(node, i);
+        }
+        // 递归删除
+        return this.delete(key, node.children[i]);
+    }
+}
+//内部方法：
+//删除叶子节点时的后继替换策略
+_deleteFromLeaf(node, index) {
+    // 直接从叶子节点中删除关键值
+    node.keys.splice(index, 1);
+    return true;
+}
+//删除内部节点时的后继替换策略
+_deleteFromInternal(node, index) {
+    const key = node.keys[index];
+    // 情况1B-a：左子节点足够
+    if (node.children[index].keys.length > this.MIN_KEYS) {//1.node.children[index]是要删除键的左边子节点
+        const predecessor = this._getPredecessor(node.children[index]);//2._getPredecessor()函数找到右子节点中的最大值
+        node.keys[index] = predecessor;//3.用找到的后继键替换要删除的键
+        return this.delete(predecessor, node.children[index]);// 4.递归删除原本左边子节点中的最大值
+    }
+    // 情况1B-b：右子节点足够
+    else if (node.children[index + 1].keys.length > this.MIN_KEYS) {//1.node.children[index + 1]是要删除键的右子节点
+        const successor = this._getSuccessor(node.children[index + 1]);//2._getSuccessor()函数找到右子节点中的最小键
+        node.keys[index] = successor;//3.用找到的后继键替换要删除的键
+        return this.delete(successor, node.children[index + 1]); // 4.递归删除后继节点；现在需要从右子树中删除原来的最小值
+    }
+    // 情况1B-c：两个子节点都不够，需要合并
+    else {
+        this._mergeChildren(node, index);//1.合并子节点：将左子节点、要删除的键、右子节点合并成一个节点
+        return this.delete(key, node.children[index]);
+    }
+}
+_mergeChildren(node, index) {
+    /**
+     * 合并节点的两个子节点
+     * @param {BTreeNode} node - 父节点
+     * @param {number} index - 要删除的键的索引位置
+     */
+    // 1. 获取要合并的两个子节点
+    const leftChild = node.children[index];      // 左子节点
+    const rightChild = node.children[index + 1]; // 右子节点
+    const keyToMoveDown = node.keys[index];      // 要从父节点下移的键
+    // 2. 将父节点的键下移到左子节点
+    leftChild.keys.push(keyToMoveDown);
+    // 3. 将右子节点的所有键合并到左子节点
+    // 注意：这里使用扩展运算符将右子节点的键数组展开并添加到左子节点
+    leftChild.keys.push(...rightChild.keys);//不需要合并子节点引用，因为叶子节点本来就没有子节点。
+    // 4. 如果子节点不是叶子节点，还需要合并子节点的子节点引用
+    if (!leftChild.isLeaf) {
+        // 将右子节点的所有子节点引用合并到左子节点
+        leftChild.children.push(...rightChild.children);
+    }
+    // 5. 从父节点中删除下移的键和右子节点引用
+    node.keys.splice(index, 1);           // 删除下移的键
+    node.children.splice(index + 1, 1);   // 删除右子节点引用
+    // 6. 特殊情况：如果合并后父节点是根节点且变空，需要更新根节点
+    if (node === this.root && node.keys.length === 0) {
+        this.root = leftChild;  // 左子节点成为新的根节点
+    }
+}
+//加强子节点：确保子节点有足够的键
+_fillChild(node, childIndex) {
+    /**
+     * 加强子节点：确保子节点有足够的键
+     * 策略优先级：
+     * 1. 从左兄弟节点借一个键
+     * 2. 从右兄弟节点借一个键  
+     * 3. 合并子节点
+     */
+    const child = node.children[childIndex];
+    // 策略1：尝试从左兄弟节点借用
+    if (childIndex > 0 && node.children[childIndex - 1].keys.length > this.MIN_KEYS) {
+        this._borrowFromLeft(node, childIndex);
+    }
+    // 策略2：尝试从右兄弟节点借用
+    else if (childIndex < node.children.length - 1 && 
+             node.children[childIndex + 1].keys.length > this.MIN_KEYS) {
+        this._borrowFromRight(node, childIndex);
+    }
+    // 策略3：左右兄弟都没有富余，只能合并
+    else {
+        // 选择与左兄弟合并（如果存在），否则与右兄弟合并
+        if (childIndex > 0) {
+            this._mergeChildren(node, childIndex - 1);
+        } else {
+            this._mergeChildren(node, childIndex);
+        }
+    }
+}
+_borrowFromLeft(node, childIndex) {
+    const child = node.children[childIndex];        // 需要加强的子节点
+    const leftSibling = node.children[childIndex - 1]; // 左兄弟节点
+    // 1. 将父节点的键下移到子节点（在开头插入）
+    child.keys.unshift(node.keys[childIndex - 1]);
+    // 2. 将左兄弟节点的最大键上移到父节点
+    node.keys[childIndex - 1] = leftSibling.keys.pop();
+    // 3. 如果子节点不是叶子节点，还需要移动子节点引用
+    if (!child.isLeaf) {
+        // 将左兄弟节点的最后一个子节点移动到子节点的开头
+        child.children.unshift(leftSibling.children.pop());
+    }
+}
+_borrowFromRight(node, childIndex) {
+    const child = node.children[childIndex];        // 需要加强的子节点
+    const rightSibling = node.children[childIndex + 1]; // 右兄弟节点
+    // 1. 将父节点的键下移到子节点（在末尾添加）
+    child.keys.push(node.keys[childIndex]);
+    // 2. 将右兄弟节点的最小键上移到父节点
+    node.keys[childIndex] = rightSibling.keys.shift();
+    // 3. 如果子节点不是叶子节点，还需要移动子节点引用
+    if (!child.isLeaf) {
+        // 将右兄弟节点的第一个子节点移动到子节点的末尾
+        child.children.push(rightSibling.children.shift());
+    }
+}
 ```
