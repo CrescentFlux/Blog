@@ -1,4 +1,4 @@
-#  Compressed Suffix Tree
+#  🌋Compressed Suffix Tree🌋
 ## 基础知识
 - 定义
 ```
