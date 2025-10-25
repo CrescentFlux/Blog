@@ -1,4 +1,4 @@
-#  🌋Compressed Suffix Tree🌋
+#  🌋Suffix Tree🌋
 ## 基础知识
 - 定义
 ```
@@ -2338,7 +2338,7 @@ console.log("创建树后根节点children:", Object.keys(tree.root.children)); 
 // 如果这里是空的，但 debugStepByStep 开始时就有节点，说明 debugStepByStep 内部有问题
 tree2.debugStepByStep();
 ```
-3. **🎊✨完整后缀压缩树朴素算法实现版本🎊✨**
+3. **🎊✨完整后缀树朴素算法实现版本🎊✨**
 ```
 //==========🎉🎉🎉🎉🎉🎉🎉🎉🎉朴素算法后缀树完整实现🎉🎉🎉🎉🎉🎉🎉🎉🎉==================//
 class SuffixTreeNode {
