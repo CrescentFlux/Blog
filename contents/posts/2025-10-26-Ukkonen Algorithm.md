@@ -1,4 +1,4 @@
-# Ukkonen algorithm 
+# Ukkonen Algorithm 
 - **定义**
 ```
 Ukkonen's Algorithm是一种用于在O(n)时间复杂度和O(n)空间复杂度下构建后缀树的在线算法，由Esko Ukkonen于1995年提出。
