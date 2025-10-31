@@ -41,7 +41,7 @@ Ukkonen's Algorithm是一种用于在O(n)时间复杂度和O(n)空间复杂度�
 
 
 
-2. **代码调试版本控制**
+2. **代码实现调试版本控制**
 ```
 //25//
 class SuffixTreeNode {//基础数据结构
