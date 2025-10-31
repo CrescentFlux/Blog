@@ -5074,3 +5074,301 @@ st.findSelectedEdgeDeclarations();
 // 可选：运行简单测试
 //st.debugSimpleCase();*/
 ```
+```
+//31//
+// 在全新的浏览器标签页中运行这个最小版本
+class SuffixTreeNode {
+    constructor() {
+        this.children = {};
+        this.start = null;
+        this.end = null;
+        this.suffixLink = null;
+        this.suffixStart = null;     // 🎯 新增：这个节点代表的后缀起始位置
+    }
+    get length() {
+        if (this.start === null || this.end === null) return 0;
+        return this.end - this.start + 1;
+    }
+}
+
+class SuffixTree {
+    constructor() {
+        this.root = new SuffixTreeNode();
+        this.text = '';
+        this.size = -1;
+        this.activeNode = this.root;
+        this.activeEdge = 0;
+        this.activeLength = 0;
+        this.remainingSuffixCount = 0;
+        this.lastNewNode = null;
+    }
+
+buildSuffixTree(text) {
+        this.text = text + '$';
+        this.size = this.text.length;
+        
+        for (let i = 0; i < this.size; i++) {
+            this.extendSuffixTree(i);
+        }
+        return this.root;
+    }
+// 只负责建立后缀链接
+addSuffixLink(node) {
+    console.log(" 尝试建立后缀链接:", {
+        from: this.lastNewNode ? `节点[${this.lastNewNode.start},${this.lastNewNode.end}]` : 'null',
+        to: `节点[${node.start},${node.end}]`
+    });
+
+    if (this.lastNewNode !== null) {
+        this.lastNewNode.suffixLink = node;
+        console.log("✅✅✅建立后缀链接成功");
+    }
+    this.lastNewNode = node;
+}
+
+// 单独的活动点跳转方法
+followSuffixLink() {
+    if (this.activeNode.suffixLink) {
+        const beforeJump = { edge: this.activeEdge, length: this.activeLength };
+        this.activeNode = this.activeNode.suffixLink;
+        console.log("🔗 后缀链接跳转:", {
+            跳转前: beforeJump,
+            跳转后: `(${this.activeEdge},${this.activeLength})`
+        });
+    }
+}
+executeSplitting(pos, activeEdgeChar, next) {
+    console.log("🎯 执行分裂");
+    console.log("🎯 执行分裂 - 调用位置:", new Error().stack.split('\n')[2]);
+    console.log("分裂前活动点:", `(${this.activeEdge},${this.activeLength})`);
+    console.log("🎯 执行分裂");
+    console.log("目标边:", `[${next.start},${next.end}]`);
+    console.log("活动点:", `(${this.activeEdge},${this.activeLength})`);
+    
+    //let splitEnd = next.start + this.activeLength - 1;
+    
+    // 1. 计算分裂点
+    let splitEnd = next.start + this.activeLength - 1;
+    console.log("将创建节点:", `[${next.start},${splitEnd}]`);
+    console.log("分裂计算:", `${next.start} + ${this.activeLength} - 1 = ${splitEnd}`);
+    if (splitEnd < next.start) {
+        console.error("❌ 产生空节点!");
+        console.log("详细状态:", {
+            nextStart: next.start,
+            activeLength: this.activeLength,
+            splitEnd: splitEnd,
+            "计算": `${next.start} + ${this.activeLength} - 1 = ${splitEnd}`
+        });
+        // 但仍然执行分裂，看看结果
+    }
+
+    // 2. 创建分裂节点
+    const splitNode = new SuffixTreeNode();
+    splitNode.start = next.start;
+    splitNode.end = splitEnd;
+    
+    // 3. 调整原节点
+    next.start = splitEnd + 1;
+    
+    // 4. 重新连接
+    this.activeNode.children[activeEdgeChar] = splitNode;
+    const nextChar = this.text[next.start];
+    splitNode.children[nextChar] = next;
+    
+    // 5. 创建新叶子
+    const leaf = new SuffixTreeNode();
+    leaf.start = pos;
+    leaf.end = Infinity;
+    const newChar = this.text[pos];
+    splitNode.children[newChar] = leaf;
+    splitNode.suffixStart = next.suffixStart;  // 🎯 内部节点：继承原节点的后缀起始位置
+    console.log("activeLength 类型和值:", typeof this.activeLength, this.activeLength);
+    
+
+    // 🎯🎯🎯 6. 在这里调用 addSuffixLink！
+    this.addSuffixLink(splitNode);
+    
+    console.log("✅ 分裂完成");
+
+
+}
+updateActivePoint() {
+    console.log("🔄 更新活动点前:", {
+        活动点: `(${this.activeEdge},${this.activeLength})`,
+        当前节点: this.activeNode === this.root ? 'root' : `[${this.activeNode.start},${this.activeNode.end}]`,
+        有后缀链接: !!this.activeNode.suffixLink
+    });
+
+    // 🎯 情况1：通过后缀链接跳转
+    if (this.activeNode.suffixLink) {
+        const oldNode = this.activeNode;
+        this.activeNode = this.activeNode.suffixLink;
+        console.log("🔗 后缀链接跳转:", {
+            从: oldNode === this.root ? 'root' : `[${oldNode.start},${oldNode.end}]`,
+            到: this.activeNode === this.root ? 'root' : '其他节点'
+        });
+    }
+    // 🎯 情况2：在根节点且 activeLength > 0
+    else if (this.activeNode === this.root && this.activeLength > 0) {
+        console.log("📍 根节点推进:", {
+            前: `(${this.activeEdge},${this.activeLength})`,
+            后: `(${this.activeEdge + 1},${this.activeLength - 1})`
+        });
+        this.activeEdge += 1;
+        this.activeLength -= 1;
+    }
+    // 🎯 情况3：在根节点且 activeLength = 0
+    else if (this.activeNode === this.root) {
+        console.log("🔄 根节点重置: activeLength=0，保持活动点不变");
+        // 保持 activeEdge 不变，等待下一轮处理
+    }
+    // 🎯 情况4：其他情况，回退到根节点
+    else {
+        console.log("🏠 回退到根节点");
+        this.activeNode = this.root;
+    }
+
+    console.log("🔄 更新活动点后:", `(${this.activeEdge},${this.activeLength})`);
+}
+// 确保这个方法在类中正确定义
+// 把它放在 extendSuffixTree 方法之前
+
+extendSuffixTree(pos) {
+    this.remainingSuffixCount++;
+    this.lastNewNode = null;
+
+    if (this.activeLength === 0) {
+        this.activeEdge = pos;
+    }
+
+    console.log(`\n🔍 处理字符 ${pos} '${this.text[pos]}'`);
+    console.log(`进入时活动点: (${this.activeEdge},${this.activeLength})`);
+   
+    while (this.remainingSuffixCount > 0) {
+        const activeEdgeChar = this.text[this.activeEdge];
+        const next = this.activeNode.children[activeEdgeChar];
+        
+        console.log(`循环中: activeEdgeChar='${activeEdgeChar}', next=`, next);
+        
+        if (!next) {
+            console.log("✅ 进入情况2：创建新边");
+            const leaf = new SuffixTreeNode();
+            leaf.start = pos;
+            leaf.end = Infinity;
+            leaf.suffixStart = pos;  // 🎯 叶子节点：后缀起始位置就是创建位置
+            this.activeNode.children[activeEdgeChar] = leaf;
+            this.remainingSuffixCount--;
+           
+            continue;
+        } else {
+            console.log("✅ 找到边，准备检查字符匹配");
+            const checkPos = next.start + this.activeLength;
+            console.log(`检查位置: ${checkPos}, 字符串中第 checkPos 个字符='${this.text[checkPos]}', 当前正在处理的新字符='${this.text[pos]}'`);
+            if (this.text[checkPos] === this.text[pos]) {
+                console.log("✅ 进入情况1：字符匹配");
+                this.activeLength++;
+                this.remainingSuffixCount--;
+                break;
+            } else {
+                console.log("🎯 进入情况3：需要分裂");
+                console.log("准备调用 executeSplitting");
+                this.executeSplitting(pos, activeEdgeChar, next);
+                console.log("executeSplitting 调用完毕");
+                this.updateActivePoint();  // 🎯 关键：更新活动点！
+                continue;  // 🎯 继续处理下一个后缀
+            }
+        }
+    }
+    
+    console.log(`字符 ${pos} 处理完成`);
+}
+
+countAllNodes() {
+    let totalNodes = 0;
+    let internalNodes = 0;
+    let leafNodes = 0;
+    let invalidNodes = 0;
+    
+    const traverse = (node) => {
+        if (!node) return;
+        totalNodes++;
+        
+        // 统计节点类型
+        if (node === this.root) {
+            // 根节点
+        } else if (Object.keys(node.children).length === 0) {
+            leafNodes++; // 叶子节点
+        } else {
+            internalNodes++; // 内部节点
+        }
+        
+        // 检查无效节点
+        if (node !== this.root && node.start > node.end && node.end !== Infinity) {
+            invalidNodes++;
+            console.log(`❌ 发现无效节点: [${node.start},${node.end}]`);
+        }
+        
+        // 递归遍历子节点
+        Object.values(node.children).forEach(traverse);
+    };
+    
+    traverse(this.root);
+    
+    console.log("📊 节点统计:", {
+        总节点数: totalNodes,
+        内部节点: internalNodes,
+        叶子节点: leafNodes,
+        无效节点: invalidNodes,
+        根节点: 1
+    });
+    
+    return { totalNodes, internalNodes, leafNodes, invalidNodes };
+}
+
+printTree(node = this.root, prefix = '', isLast = true, currentSuffixStart = null) {
+    if (!node) return;
+    const connector = isLast ? '└── ' : '├── ';
+    if (node === this.root) {
+        console.log(prefix + connector + '根节点');
+    } else {
+        const nodeType = Object.keys(node.children).length === 0 ? '叶子' : '内部节点';
+        let edgeText = "";
+        if (node.start <= node.end || node.end === Infinity) {
+            const endIndex = node.end === Infinity ? this.text.length : node.end + 1;
+            edgeText = this.text.substring(node.start, Math.min(endIndex, this.text.length));
+        } else {
+            edgeText = "INVALID_RANGE";
+        }
+        // 🎯 动态计算后缀起始位置
+        let suffixStartInfo = '';
+        if (currentSuffixStart !== null) {
+            suffixStartInfo = ` 后缀起始:${currentSuffixStart}`;
+        }
+        console.log(prefix + connector + `${nodeType} [${node.start},${node.end}] "${edgeText}"${suffixStartInfo}`);
+    }
+    const children = Object.keys(node.children);
+    children.forEach((char, index) => {
+        const isLastChild = index === children.length - 1;
+        const childPrefix = prefix + (isLast ? '    ' : '│   ');
+        console.log(childPrefix + `通过字符 '${char}':`);
+        // 🎯 动态传递后缀起始位置
+        let childSuffixStart = currentSuffixStart;
+        if (node === this.root) {
+            // 根节点的子节点，后缀起始位置就是节点的start
+            childSuffixStart = node.children[char].start;
+        }
+        // 否则保持当前的后缀起始位置不变
+        this.printTree(node.children[char], childPrefix + '    ', isLastChild, childSuffixStart);
+    });
+}
+}
+
+
+// 测试
+const st = new SuffixTree();
+st.buildSuffixTree("bananasanaus");
+st.printTree();
+console.log("=== 节点统计 ===");
+st.countAllNodes();
+
+```
