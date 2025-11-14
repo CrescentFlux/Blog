@@ -2,10 +2,10 @@
 # Bellman-Ford   Floyd-Warshall  Algorithm
 ## 基础知识
 
-- Bellman-Ford 算法
+- **Bellman-Ford 算法**
    - 定义：用于计算单源最短路径的动态规划算法，能够处理包含负权边的图，并能检测负权环的存在。
 
-- Floyd-Warshall 算法
+- **Floyd-Warshall 算法**
    - 定义：是一种用于计算所有点对最短路径的动态规划算法，通过考虑所有可能的中间节点，系统地优化每对顶点之间的距离。
 
 
