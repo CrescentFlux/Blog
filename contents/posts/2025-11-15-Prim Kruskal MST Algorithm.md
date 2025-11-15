@@ -6,15 +6,16 @@
 
 
 
-# Prim  Kruskal Algorithm
+# Prim  Kruskal MST Algorithm
 ## **基础知识**
 
 
 
 - **Prim Algorithm**
-   - 定义：一种贪心算法，用于为加权无向图寻找最小生成树
+   - 定义：一种贪心算法，用于为加权无向图寻找最小生成树(MST)
+     - 最小生成树（Minimum Spanning Tree）是指在一个加权无向图中，找到一棵包含所有顶点的树，使得所有边的权重之和最小
 - **Kruskal Algorithm**
-   - 定义：一种贪心算法，通过按权重递增顺序考虑边来构建最小生成树
+   - 定义：一种贪心算法，通过按权重递增顺序考虑边来构建最小生成树(MST)
 
 
 
