@@ -55,18 +55,11 @@ class FlowNetwork {
         }
         return copy;
     }
-    /*
-lowNetwork 就是原始的、没经过任何流量调整的完整网络结构;flowNetwork：原始问题定义，只读不写;residualGraph：算法工作空间，动态更新    
-保持 flowNetwork 原封不动这样设计的好处是：同一个网络可以多次运行算法，每次都是从头开始
+/*
 初始化剩余图剩余图（Residual Graph） 是算法运行时的工作地图，它记录着当前还能走多少流量。
 剩余图的构成包含两种边：正向边：剩余容量 = 原始容量 - 已用流量;反向边：容量 = 已用流量（表示可以"退回"的流量）算法不看原始图，只看剩余图来找路
 反向边容量 = 实际已使用的流量,反向边表示可以重新分配的量，你不能重新分配你根本没有使用过的容量
 反向边容量 = 在这条路径上实际用掉的流量,不能超过边的原始容量,不能超过这条路径实际运送的流量,必须是真实使用过的量
-第一步：从flowNetwork创建residualGraph
-const residual = JSON.parse(JSON.stringify(flowNetwork.graph));
-JSON.parse(JSON.stringify(obj)) 在以下情况会失败：对象包含循环引用,对象包含 undefined、function 等无法序列化的值,对象结构复杂
-后续算法都在residualGraph上操作，不修改原始flowNetwork
-使用安全的深拷贝方法
 
 residualGraph（剩余图）表示当前还能走多少流量;包含正向边（剩余容量）和反向边（可退回的容量）随着算法执行动态更新值为0的边表示"此路不通"
 source（源点）就是流的起点，相当于：水库的源头,快递的总仓库,消息的发送者
