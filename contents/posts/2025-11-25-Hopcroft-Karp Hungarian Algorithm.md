@@ -336,7 +336,7 @@ class HopcroftKarp {
             this.bfsCount++; // 计数BFS轮次
             for (let u = 0; u < this.leftCount; u++) {
                 if (this.leftMatch[u] === this.nullNode && this.dfs(u)) {// ← 找到并执行增广路径
-                    matching++;/ ← 匹配数增加（定理的结论）
+                    matching++;// ← 匹配数增加（定理的结论）
                 }
             }
         }
@@ -365,15 +365,13 @@ class HopcroftKarp {
 // 简单测试 - 验证Hopcroft-Karp算法是否正常工作
 function testHopcroftKarp() {
     console.log("=== Hopcroft-Karp算法简单测试 ===");
-    
-    // 测试案例：3个男生，3个女生
     const testCase = {
         leftCount: 3,
         rightCount: 3,
         edges: [
-            [0, 0], [0, 1],  // 男生0喜欢女生0,1
-            [1, 1], [1, 2],  // 男生1喜欢女生1,2
-            [2, 0]           // 男生2喜欢女生0
+            [0, 0], [0, 1],  // 
+            [1, 1], [1, 2],  //
+            [2, 0]           // 
         ]
     };
 
