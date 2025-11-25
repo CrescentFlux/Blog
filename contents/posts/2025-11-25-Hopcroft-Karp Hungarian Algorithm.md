@@ -29,6 +29,7 @@
 
 2. **代码实现**
 ```
+//========🔄Hungarian=========//
 class HungarianAlgorithm {
     constructor() {
         this.adjList = [];       // 邻接表：adjList[u] = 与左部节点u相邻的右部节点集合
@@ -164,6 +165,7 @@ result.matchingPairs.forEach(([u, v]) => {
 Hopcroft-Karp是优化的BFS+DFS：先找到所有最短路径，再批量执行
 */
 
+//========🔄HopcroftKarp=========//
 class HopcroftKarp {
     // 针对二分图匹配优化,不需要容量、流量、反向边等概念
     constructor() {
@@ -390,7 +392,7 @@ function testHopcroftKarp() {
 testHopcroftKarp();
 
 
-//=====算法性能对比测试=====//
+//=====🔄算法性能对比测试=====//
 class HungarianAlgorithm {
     constructor() {
         this.adjList = []; this.rightMatch = []; this.visited = []; this.operationCount = 0;
