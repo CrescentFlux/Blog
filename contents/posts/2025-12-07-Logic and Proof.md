@@ -1,4 +1,9 @@
+---
+math: true
+---
 ## Logic Symbols Basic Rules
+
+
 
 - **Truth Table**
 
