@@ -1,13 +1,10 @@
----
-math: true
----
 ## Logic Symbols Basic Rules
 
 
 
 - **Truth Table**
 
-|p |q| $ p \land q $| $ p \lor q$|$ p \oplus q$|$ p \to q$|$ p \leftrightarrow q $|
+|p |q| \\(p \land q\\) | $ p \lor q$|$ p \oplus q$|$ p \to q$|$ p \leftrightarrow q $|
 |---|---|---|---|---|---|---|
 |T|F|F|T|T|F|F|
 |F|T|F|T|T|T|F|
