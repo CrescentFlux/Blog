@@ -56,4 +56,7 @@
             n = n-cᵢ
   ```
 
-  
+- Big O notation: Formally,∃C>0, ∃k∈ℝ such that ∀x>k,|f(x)| <= 𝐂|g(x)| ,f(x) = O(g(x)), x → ∞;c and k are witness proving this asymptotic relationship. That means there are extist real numbers constant C >0 and k,|f(x)| <= 𝐂|g(x)| holds for all x>k.
+  - we can quantify an algorithm's scalability using big O notation,which is crucial for handling big data.
+  - Polynomial Order Theorem:f(x) = aₙxⁿ + aₙ₋₁xⁿ⁻¹ + ... + a₁x + a₀, aₙ ≠ 0，n is nonnegtive integer;f(x) = O(xⁿ).
+  For any n-th degree polynomial,its asymptotic growth is bounded above by its leading term;the highest-degree term dominates the polynomial's growth.
