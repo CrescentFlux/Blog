@@ -14,4 +14,11 @@
 
 - lognᵏ=Θ(logbᵏ),Logarithms with different bases differ only by a constant factor.
 
-- Ω notation:f(n)=Ω(g(n)),There extists if and only if postive constants C 和 n₀​，for all n≥n₀​：|f(n)|≥C⋅|g(n)| ,C is growth rate.
+- Ω notation:f(n)=Ω(g(n)),There extists if and only if postive constants C 和 n₀​，for all n≥n₀​：|f(n)|≥C⋅|g(n)| ,C is lower bound scaling factor.
+
+- Θ notation:f(n)=Θ(g(n)) means the function grows proportionally to g(n) asymptotically.Formally, C1​|g(x)|≤|f(x)|≤C2​|g(x)|,C is two-side scaling factor.
+
+- Computational complexity :It encompasses both time complexity and space complexity.
+  - Constant complexity ; Linear complexity;Logarithmic complexity;Linearithmic logarithmic complexity;Polylomial complexity.
+
+- Np complete problem:NP problem are the hardest problems in NP.NP = Nondeterministic Polynomial time
