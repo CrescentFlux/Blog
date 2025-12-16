@@ -44,3 +44,6 @@
     - Combine the partial solutions：`x= a₁​M₁​t₁​+a₂​M₂​t₂​+⋯+aₖ​Mₖ​tₖ(mod M)`
 - Fermat's Little Theorem: formally,if k is prime,a is a integer for can not be divisable by k,then `aᴷ⁻¹≡1(mod p)`,and for every integer a,`aᴷ≡a(mod p) `.
 - Pseudoprime:let b be a postive integer,n is called pseduprime to base b if gcd(b, k) = 1 and b ᴷ⁻¹=1(mod n).[Passing the fermat test does not guarantee primality]
+- Primitive Root:For a prime p,a primitive root modulo r is an integer such that`rⁿmod p`(1<=n<=p-1).p{1,2,3,...,p−1};
+an integer r such that every nonzerl element in the set is the power of r in modular p.
+- Additional questions: Discrete Logarithm problem, Hush function, Psedorandom Number, Check code.
