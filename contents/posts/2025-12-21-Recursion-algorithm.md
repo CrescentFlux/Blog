@@ -40,3 +40,16 @@
    else return search(i+1,j,x)
    the output is the index of target elements within array a[1...n] ,or 0 it's not present.
    ```
+   ```
+   Recursive binary search algorithm
+   procedure binary search(i,j,x:integer 1 <= i <= n,1 <= j <= n)The array must be sorted in ascending order.
+   m= ⌊(i+j)/2⌋
+   if x=aₘ then return m
+   else if (x<aₘ and i<m) then 
+       return binary search(i,m-1,x)
+   else if (x>aₘ and j>m) then
+       return binary search (m+1,j,x)
+   else return 0
+   the output is the index of target elements within array a[1...n] ,or 0 it's not present.
+   ```
+
