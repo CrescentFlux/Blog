@@ -10,3 +10,35 @@
   - Indistinguishable objects and  InDistinguishable boxes:Integer Partition
 
 ## Generating permutations and combinations
+```
+procedure next permutaion
+j:= n-1
+while a ⱼ>a ⱼ+1:
+k:=n:
+while a ⱼ>aₖ :
+k=k-1
+change aₖ  and a ⱼ:
+r:=n
+s:=j+1
+while r>s
+change aᵣ and aₛ:
+r=r-1
+s=s+1
+```
+```
+procedure next bit string
+i=0
+while bᵢ=1
+  bᵢ=0
+  i=i+1
+bᵢ=1
+```
+```
+procedure next r-combination
+i:=r
+while aᵢ=n-r+i
+  i=i-1
+aᵢ=ai+1
+for j=i+1 to r
+  aⱼ= aᵢ+j-i
+```
