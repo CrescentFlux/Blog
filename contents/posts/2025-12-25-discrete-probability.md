@@ -13,3 +13,8 @@
 - Mutually independent:Events are mutually independent if and only if` p(Eᵢ₁∩Eᵢ₂∩...Eᵢₘ)=p(Eᵢ₁)p(Eᵢ₂)...p(Eᵢₘ)`,1<=i₁<i₂<iₘ<=n,m>=2.
 - Binomial Experiment:In n independent bernoulli trails with sucesss probability is p,and failture probability is q,the probability of exactly k success is ` C(n,k) pᵏqⁿ⁻ᵏ`.so we donated this probability as b(k;n,p) and  the function `b(k;n,p)=C(n,k) pᵏqⁿ⁻ᵏ` is named probability mass function of the Binomial Distribution.
 - Random variable:A random variable is a real-valued function defined on a sample space.
+- Distribution of a discrete random variable: For a discrete random variable X, its distribution is given by its probability mass function `P(X=r)` ,specified for each value r in range of X.
+- Hash collision Probability :`P_no-collision = 1 × [(N-1)/N] × [(N-2)/N] × … × [(N-(k-1))/N]= ∏_{i=1}^{k-1} [1 - (i/N)]`
+`P_collision = 1-1 × [(N-1)/N] × [(N-2)/N] × … × [(N-(k-1))/N]`
+- Probabilistic Method:if the probability that a randomly chosen element from S does not have property P is less than 1,then S must contain an element with property P.
+- The Erdős lower bound on Ramsey numbers:if k is a integer,k>=2,`R(k,k) >= 2^(k/2)`,Erdős proved that Ramsey numbers grow at least exponentially.
