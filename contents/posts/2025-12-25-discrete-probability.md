@@ -10,7 +10,7 @@
 - Conditional probability:Let E and F be events with p(F)>0,the conditional probability of E given F ,donated by p(E|F),is defined as `p(E|F)=p(E∩F)/p(F)`.
 - Independence of Events: Events E and F are independent ,if and only if `p(E∩F)=p(E)p(F)`.They can happen simultaneously.
 - Pairwise independent:Let Events E₁E₂E₃...Eₙ are pairwise if and only if` p(Eᵢ∩Eⱼ)=p(Eᵢ)p(Eⱼ)`,for all i and j,1=<i<j<=n.
-- Mutually independent:Events are mutually independent if and only if 1<=i₁<i₂<iₘ<=n,m>=2:`p(Eᵢ₁∩Eᵢ₂∩...Eᵢₘ)=p(Eᵢ₁)p(Eᵢ₂)...p(Eᵢₘ)`
+- Mutually independent:Events are mutually independent if and only if `p(Eᵢ₁∩Eᵢ₂∩...Eᵢₘ)=p(Eᵢ₁)p(Eᵢ₂)...p(Eᵢₘ)1<=i₁<i₂<iₘ<=n,m>=2`
 - Binomial Experiment:In n independent bernoulli trails with sucesss probability is p,and failture probability is q,the probability of exactly k success is ` C(n,k) pᵏqⁿ⁻ᵏ`.so we donated this probability as b(k;n,p) and  the function `b(k;n,p)=C(n,k) pᵏqⁿ⁻ᵏ` is named probability mass function of the Binomial Distribution.
 - Random variable:A random variable is a real-valued function defined on a sample space.
 - Distribution of a discrete random variable: For a discrete random variable X, its distribution is given by its probability mass function `P(X=r)` ,specified for each value r in range of X.
