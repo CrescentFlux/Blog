@@ -1,0 +1,18 @@
+## Probability theory
+- Bayes' theorem:If E and F are two diffrent events from  Sample space S ,and `p(E)≠0,p(F)≠0`,then`p(F|E)=p(E|F)p(F)/P(E|F)P(F)+P(E|F̄)P(F̄)`,conditional probability:`p(F|E)=p(F∩E)/p(E)`
+- Generalized bayes' theorem:If E is the events from sample space S ,F₁,F₂...Fₙ is the mataully exclusive events,and F₁...ₙ=S,if p(E)≠0,and Fᵢ≠0 then `P(Fⱼ|E)=P(E|Fⱼ)P(Fⱼ)/∑ᵢ₁ⁿP(E|Fᵢ)P(Fᵢ)`.
+- Expected value:it's the long-run average outcome of a random variable over many repetitions of an experiment.
+- The expected value of a random variable 𝐗(s) defined on a sample space S is `𝐄(𝐗)=∑x∈S P(s)X(s)` ,P(s)is the probability of elementary outcome s,and X(s) is the value of random variable X when outcome S occurs.Deviation from mean=X(s)−E[X], it's Probabilistic fluctuation of outcomes.
+- If 𝐗 is the random variable,p(𝐗=r)is the probability of x=r,`p(𝐗=r)=∑{s∈𝐒, 𝐗(s)=r} p(s)`,then `E[X]=∑{ r∈𝐗(s)} p(𝐗=r)r`
+- For n independent bernoulli trials,the expected number of successes is np ,where p is the probability of success in each trial.
+- Linearity of expectation:if Xᵢ(i=1,2...n)is the random variable on a sample space S,n is the positive integers,and if a and b is real numbers,then 
+  - Additivity:E[X₁+X₂+...Xₙ]=E[X₁]+E[X₂]+...+E[Xₙ]
+  - Homogeneity:E[aX+b]=aE[X]+b
+- Average-case computational complexity:`E[T]=∑(j=1...n)P(aⱼ)xT(aⱼ)`(Algorithm performance analysis)
+- Geometric distribution:for k=1,2,3...n,`P(X=k)=(1−p)ᴷ⁻¹p`,x is the geometric distributed with success probability p
+  - if a random variable X  follows the geometric distribution with parameter p,then`E[X]=1/p`.
+- Independent random variables:two random variable X and Y are independent on sample space S,then`P(X=x,Y=y)=P(X=x)⋅P(Y=y)`
+  - Two random variable X and Y are independent on sample space S,then`E(XY)=E(X)⋅E(Y)`
+- Variance:if X is the random variable on sample space S,the variance x called V(X),`V(X)=∑(s∈S)(X(s)-E(x))²p(s)`;and `V(X)=E(X²)-E(X)²`;Variance Corollary:X is the random variable on sample space S,`μ=E[X]`,`Var(X)=E[(X−μ)²]`
+- Bienaymé formula:for Pairwise uncorrelated random variables X₁,X₂,…,Xₙ​：`Var(∑i=1...n ​Xᵢ​)=∑(i=1...n)Var(Xᵢ)`
+- Chebyshev’s inequality:`P(|X(s)-E(x)|>=r)<=V(x)/r²`
