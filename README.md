@@ -1,4 +1,7 @@
 # 🌱 我的技术成长花园
+> 每日编程 | Git & PowerShell 学习笔记 | 开源分享
+![Visitors](https://visitor-badge.laobi.icu/badge?page_id=CrescentFlow.My-Final-Blog)
+
 <div style="text-align: center; margin: 2rem 0; padding: 1.5rem; background: #f8f9fa; border-radius: 10px;">
   <h3>📚 知识库生长状态</h3>
   <p>本花园正在持续培育中，目前已有：</p>
@@ -34,10 +37,6 @@ fetch(apiUrl)
     document.getElementById('noteCount').style.color = '#dc3545';
   });
 </script>
-> 每日编程修炼 | Git & PowerShell 学习笔记 | 开源分享
-
-![GitHub Last Commit](https://img.shields.io/github/last-commit/CrescentFlow/My-Final-Blog)
-![Visitors](https://visitor-badge.laobi.icu/badge?page_id=CrescentFlow.My-Final-Blog)
 
 ## 📚 技术笔记索引
 
