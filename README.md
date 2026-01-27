@@ -43,13 +43,13 @@
 ## 🤝成长游戏区
 
 #### 🔍 快速检索
-- [按日期查看](https://github.com/CrescentFlow/Blog/tree/main?sort=committerdate)
+- [按日期查看](https://github.com/CrescentFlux/Blog/tree/main?sort=committerdate)
 - [按标签筛选](#)  
 #### 💬 交流互动
 <p>
-  <a href="https://github.com/CrescentFlow/Blog/issues/new?assignees=CrescentFlow&labels=bug&template=bug_report.md" target="_blank">🐛 报告Bug</a> | 
-  <a href="https://github.com/CrescentFlow/Blog/issues/new?assignees=CrescentFlow&labels=enhancement&template=feature_request.md" target="_blank">💡 提出建议</a> | 
-  <a href="https://github.com/CrescentFlow/Blog/issues/new?assignees=CrescentFlow&labels=documentation+discussion&template=share_experience.md" target="_blank">🌟 分享经验</a>
+  <a href="https://github.com/CrescentFlux/Blog/issues/new?assignees=CrescentFlux&labels=bug&template=bug_report.md" target="_blank">🐛 报告Bug</a> | 
+  <a href="https://github.com/CrescentFlux/Blog/issues/new?assignees=CrescentFlux&labels=enhancement&template=feature_request.md" target="_blank">💡 提出建议</a> | 
+  <a href="https://github.com/CrescentFlux/Blog/issues/new?assignees=CrescentFlux&labels=documentation+discussion&template=share_experience.md" target="_blank">🌟 分享经验</a>
 </p>
 
 
