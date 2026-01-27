@@ -1,5 +1,6 @@
 # 🌱 我的技术成长花园
-> 每日编程 | Git & PowerShell 学习笔记 | 开源分享
+> 编程 | Git & PowerShell &  Algorithm 学习笔记 | 开源分享
+
 ![Visitors](https://visitor-badge.laobi.icu/badge?page_id=CrescentFlow.My-Final-Blog)
 
 <div style="text-align: center; margin: 2rem 0; padding: 1.5rem; background: #f8f9fa; border-radius: 10px;">
