@@ -10,30 +10,29 @@
 </div>
 
 <script>
-// 配置区：请修改下面的 username 和 repo 为你的信息！
-const username = 'CrescentFlux'; // 你的GitHub用户名
-const repo = 'Blog'; // 你的仓库名，例如这里用 'STORY'，请确认
-const folderPath = 'contents/posts'; // 要统计的文件夹路径，如 '技术笔记'。留空则统计整个仓库。
+// 最简方案：去掉递归查询，直接查 posts 文件夹
+const username = 'CrescentFlux';
+const repo = 'Blog';
 
-// 组装 API 请求 URL
-let apiUrl = `https://api.github.com/repos/${username}/${repo}/git/trees/HEAD?recursive=1`;
-
-fetch(apiUrl)
+// 直接查 posts 文件夹内容（不是整个仓库树）
+fetch(`https://api.github.com/repos/${username}/${repo}/contents/contents/posts`)
   .then(response => response.json())
   .then(data => {
-    // 筛选出 .md 文件，并可以根据路径过滤
-    let files = data.tree.filter(item => 
-      item.type === 'blob' && 
-      item.path.endsWith('.md') &&
-      (folderPath === '' || item.path.startsWith(folderPath))
-    );
-    // 更新页面上的数字
-    document.getElementById('noteCount').textContent = files.length;
+    // 统计 .md 文件
+    let count = 0;
+    data.forEach(item => {
+      if (item.type === 'file' && item.name.endsWith('.md')) {
+        count++;
+      }
+    });
+    
+    document.getElementById('noteCount').textContent = count;
+    document.getElementById('noteCount').style.color = '#48bbff';
   })
   .catch(error => {
-    console.error('获取数据失败:', error);
+    console.log('加载失败，显示缓存或默认值');
     document.getElementById('noteCount').textContent = '?';
-    document.getElementById('noteCount').style.color = '#dc3545';
+    document.getElementById('noteCount').style.color = '#ff4757';
   });
 </script>
 
