@@ -21,7 +21,6 @@
 
 ## 🕐成长仪表盘
 
-#### ✨ 学习数据看板
 <div style="text-align: center; margin: 2rem 0; padding: 1.5rem; background: #f8f9fa; border-radius: 10px;">
   <h3>📚 知识库生长状态</h3>
   <p>本花园正在持续培育中，目前已有：</p>
@@ -59,16 +58,15 @@ fetch(apiUrl)
 </script>
 
 
-
 #### 🎯 当前修炼重点
 - ✅ Git高级技巧
 - 🔄 PowerShell自动化
 - ⏳ Shell脚本编程
 
 #### 🏆 成就系统
-- ✅ Git推送大师（已解锁）
-- 🔄 PowerShell初学者（修炼中）
-- ⏳ 技术分享者（进行中）
+- ✅ Git推送大师
+- 🔄 PowerShell
+- ⏳ 技术分享者
 
 
 
