@@ -1,26 +1,4 @@
 # 🌱 我的技术成长花园
-
-> 每日编程修炼 | Git & PowerShell 学习笔记 | 开源分享
-
-![GitHub Last Commit](https://img.shields.io/github/last-commit/CrescentFlow/My-Final-Blog)
-![Total Notes](https://img.shields.io/badge/笔记数量-8篇-blue)
-![Visitors](https://visitor-badge.laobi.icu/badge?page_id=CrescentFlow.My-Final-Blog)
-
-## 📚 技术笔记索引
-
-### Git 专题
-- [Git推送问题解决方案](2025-08-23-shell-contacts.md)
-- [分支管理技巧](2025-08-21-git-tips.md)
-
-### PowerShell 专题  
-- [PowerShell基础命令](2025-08-22-powershell-basic-contacts.md)
-
-### 学习路径
-- [我的技术学习路线图](learning-path.md)
-
-
-## 🕐成长仪表盘
-
 <div style="text-align: center; margin: 2rem 0; padding: 1.5rem; background: #f8f9fa; border-radius: 10px;">
   <h3>📚 知识库生长状态</h3>
   <p>本花园正在持续培育中，目前已有：</p>
@@ -56,9 +34,30 @@ fetch(apiUrl)
     document.getElementById('noteCount').style.color = '#dc3545';
   });
 </script>
+> 每日编程修炼 | Git & PowerShell 学习笔记 | 开源分享
+
+![GitHub Last Commit](https://img.shields.io/github/last-commit/CrescentFlow/My-Final-Blog)
+![Visitors](https://visitor-badge.laobi.icu/badge?page_id=CrescentFlow.My-Final-Blog)
+
+## 📚 技术笔记索引
+
+### Git 专题
+- [Git推送问题解决方案](2025-08-23-shell-contacts.md)
+- [分支管理技巧](2025-08-21-git-tips.md)
+
+### PowerShell 专题  
+- [PowerShell基础命令](2025-08-22-powershell-basic-contacts.md)
+
+### 学习路径
+- [我的技术学习路线图](learning-path.md)
 
 
-#### 🎯 当前修炼重点
+## 🕐成长仪表盘
+
+
+
+
+#### 🎯 当前重点
 - ✅ Git高级技巧
 - 🔄 PowerShell自动化
 - ⏳ Shell脚本编程
