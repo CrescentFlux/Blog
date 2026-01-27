@@ -40,16 +40,8 @@ fetch(apiUrl)
 ## 📚 技术笔记索引
 
 ### 快速检索
-- **[按日期查看](https://github.com/CrescentFlux/Blog/tree/main?sort=committerdate)**
+- **[按日期查看](https://github.com/CrescentFlux/Blog/tree/main/contents/posts)**
 - **[按标签筛选](#)** 
-
-### Git 专题
-- [Git推送问题解决方案](2025-08-23-shell-contacts.md)
-- [分支管理技巧](2025-08-21-git-tips.md)
-
-### PowerShell 专题  
-- [PowerShell基础命令](2025-08-22-powershell-basic-contacts.md)
-
 
 
 ## 🕐成长仪表盘
