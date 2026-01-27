@@ -1,4 +1,4 @@
-# 🌱 我的技术成长花园
+# 🌐 我的技术成长花园
 > 编程 | Git & PowerShell &  Algorithm | 开源分享
 
 <div style="text-align: center; margin: 2rem 0; padding: 1.5rem; background: #f8f9fa; border-radius: 10px;">
@@ -6,7 +6,7 @@
   <p>本花园正在持续培育中，目前已有：</p>
   <div style="font-size: 2.5rem; font-weight: bold; color: #2c8c3f;" id="noteCount">--</div>
   <p>篇技术笔记扎根于此。</p>
-  <p style="font-size: 0.9em; color: #666; margin-top: 1rem;"><i>✨ 数据动态更新于每次提交后</i></p>
+  <p style="font-size: 0.9em; color: #666; margin-top: 1rem;"><i>💕数据动态更新于每次提交后</i></p>
 </div>
 
 <script>
@@ -41,8 +41,6 @@ fetch(apiUrl)
 
 ### 快速检索
 - **[按日期查看](https://github.com/CrescentFlux/Blog/tree/main/contents/posts)**
-- **[按标签筛选](#)** 
-
 
 ## 🕐成长仪表盘
 
