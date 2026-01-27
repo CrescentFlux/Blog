@@ -38,19 +38,17 @@ fetch(apiUrl)
 </script>
 
 ## 📚 技术笔记索引
-
-### 快速检索
+### 🔍快速检索
 - **[按日期查看](https://github.com/CrescentFlux/Blog/tree/main/contents/posts)**
 
 ## 🕐成长仪表盘
-
-#### 🏆 成就系统
+### 🏆 成就系统
 - ✅ Git推送大师
 - 🔄 PowerShell
 - ⏳ 技术分享者
 
 ## 🤝成长游戏区
-#### 💬 交流互动
+### 💬 交流互动
 <p>
   <a href="https://github.com/CrescentFlux/Blog/issues/new?assignees=CrescentFlux&labels=bug&template=bug_report.md" target="_blank">🐛 报告Bug</a> | 
   <a href="https://github.com/CrescentFlux/Blog/issues/new?assignees=CrescentFlux&labels=enhancement&template=feature_request.md" target="_blank">💡 提出建议</a> | 
