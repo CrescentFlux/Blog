@@ -13,7 +13,7 @@
 // 配置区：请修改下面的 username 和 repo 为你的信息！
 const username = 'CrescentFlux'; // 你的GitHub用户名
 const repo = 'Blog'; // 你的仓库名，例如这里用 'STORY'，请确认
-const folderPath = ''; // 要统计的文件夹路径，如 '技术笔记'。留空则统计整个仓库。
+const folderPath = 'contents/posts'; // 要统计的文件夹路径，如 '技术笔记'。留空则统计整个仓库。
 
 // 组装 API 请求 URL
 let apiUrl = `https://api.github.com/repos/${username}/${repo}/git/trees/HEAD?recursive=1`;
@@ -39,7 +39,7 @@ fetch(apiUrl)
 
 ## 📚 技术笔记索引
 
-### 🔍 快速检索
+### 快速检索
 - **[按日期查看](https://github.com/CrescentFlux/Blog/tree/main?sort=committerdate)**
 - **[按标签筛选](#)** 
 
@@ -53,11 +53,6 @@ fetch(apiUrl)
 
 
 ## 🕐成长仪表盘
-
-#### 🎯 当前重点
-- ✅ Git高级技巧
-- 🔄 PowerShell自动化
-- ⏳ Shell脚本编程
 
 #### 🏆 成就系统
 - ✅ Git推送大师
