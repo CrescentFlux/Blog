@@ -7,7 +7,42 @@
 ![Visitors](https://visitor-badge.laobi.icu/badge?page_id=CrescentFlow.My-Final-Blog)
 
 ## 📚 技术笔记索引
+<!-- 在你花园首页（README.md 或 index.md）的合适位置插入 -->
+<div style="text-align: center; margin: 2rem 0; padding: 1.5rem; background: #f8f9fa; border-radius: 10px;">
+  <h3>📚 知识库生长状态</h3>
+  <p>本花园正在持续培育中，目前已有：</p>
+  <div style="font-size: 2.5rem; font-weight: bold; color: #2c8c3f;" id="noteCount">--</div>
+  <p>篇技术笔记扎根于此。</p>
+  <p style="font-size: 0.9em; color: #666; margin-top: 1rem;"><i>✨ 数据动态更新于每次提交后</i></p>
+</div>
 
+<script>
+// 配置区：请修改下面的 username 和 repo 为你的信息！
+const username = 'CrescentFlux'; // 你的GitHub用户名
+const repo = 'Blog'; // 你的仓库名，例如这里用 'STORY'，请确认
+const folderPath = ''; // 要统计的文件夹路径，如 '技术笔记'。留空则统计整个仓库。
+
+// 组装 API 请求 URL
+let apiUrl = `https://api.github.com/repos/${username}/${repo}/git/trees/HEAD?recursive=1`;
+
+fetch(apiUrl)
+  .then(response => response.json())
+  .then(data => {
+    // 筛选出 .md 文件，并可以根据路径过滤
+    let files = data.tree.filter(item => 
+      item.type === 'blob' && 
+      item.path.endsWith('.md') &&
+      (folderPath === '' || item.path.startsWith(folderPath))
+    );
+    // 更新页面上的数字
+    document.getElementById('noteCount').textContent = files.length;
+  })
+  .catch(error => {
+    console.error('获取数据失败:', error);
+    document.getElementById('noteCount').textContent = '?';
+    document.getElementById('noteCount').style.color = '#dc3545';
+  });
+</script>
 ### Git 专题
 - [Git推送问题解决方案](2025-08-23-shell-contacts.md)
 - [分支管理技巧](2025-08-21-git-tips.md)
