@@ -7,7 +7,21 @@
 ![Visitors](https://visitor-badge.laobi.icu/badge?page_id=CrescentFlow.My-Final-Blog)
 
 ## 📚 技术笔记索引
-<!-- 在你花园首页（README.md 或 index.md）的合适位置插入 -->
+
+### Git 专题
+- [Git推送问题解决方案](2025-08-23-shell-contacts.md)
+- [分支管理技巧](2025-08-21-git-tips.md)
+
+### PowerShell 专题  
+- [PowerShell基础命令](2025-08-22-powershell-basic-contacts.md)
+
+### 学习路径
+- [我的技术学习路线图](learning-path.md)
+
+
+## 🕐成长仪表盘
+
+#### ✨ 学习数据看板
 <div style="text-align: center; margin: 2rem 0; padding: 1.5rem; background: #f8f9fa; border-radius: 10px;">
   <h3>📚 知识库生长状态</h3>
   <p>本花园正在持续培育中，目前已有：</p>
@@ -43,22 +57,6 @@ fetch(apiUrl)
     document.getElementById('noteCount').style.color = '#dc3545';
   });
 </script>
-### Git 专题
-- [Git推送问题解决方案](2025-08-23-shell-contacts.md)
-- [分支管理技巧](2025-08-21-git-tips.md)
-
-### PowerShell 专题  
-- [PowerShell基础命令](2025-08-22-powershell-basic-contacts.md)
-
-### 学习路径
-- [我的技术学习路线图](learning-path.md)
-
-
-## 🕐成长仪表盘
-
-#### ✨ 学习数据看板
-- 📦**知识积累**: 24 KiB 技术笔记
-- 🌸**最近更新**:
 
 
 
