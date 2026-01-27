@@ -27,7 +27,7 @@ fetch(`https://api.github.com/repos/${username}/${repo}/contents/contents/posts`
     });
     
     document.getElementById('noteCount').textContent = count;
-    document.getElementById('noteCount').style.color = '#48bbff';
+    document.getElementById('noteCount').style.color = '#149b67ff';
   })
   .catch(error => {
     console.log('加载失败，显示缓存或默认值');
