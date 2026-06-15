@@ -6,7 +6,7 @@
   <p>本花园正在持续培育中，目前已有：</p>
   <div style="font-size: 2.5rem; font-weight: bold; color: #2c8c3f;" id="noteCount">--</div>
   <p>篇技术笔记扎根于此。</p>
-  <p style="font-size: 0.9em; color: #666; margin-top: 1rem;"><i>💕数据动态更新于每次提交后</i></p>
+  <p style="font-size: 0.9em; color: #666; margin-top: 1rem;"><i>数据动态更新于每次提交后</i></p>
 </div>
 
 <script>
@@ -54,4 +54,3 @@ fetch(`https://api.github.com/repos/${username}/${repo}/contents/contents/posts`
   <a href="https://github.com/CrescentFlux/Blog/issues/new?assignees=CrescentFlux&labels=documentation+discussion&template=share_experience.md" target="_blank">🌟 分享经验</a>
 </p>
 
-> "心有猛虎🐅，细嗅蔷薇🌹"
